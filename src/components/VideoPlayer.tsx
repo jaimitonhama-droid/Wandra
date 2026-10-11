@@ -160,7 +160,6 @@ export default function VideoPlayer({ youtubeId, title = "Vídeo Aula" }: { yout
         <button 
           onClick={togglePlay}
           style={{
-            background: "none",
             border: "none",
             color: "#fff",
             cursor: "pointer",

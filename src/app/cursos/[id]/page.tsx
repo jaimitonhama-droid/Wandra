@@ -262,7 +262,7 @@ export default async function CursoDetailPage({ params }: { params: Promise<{ id
             Conteúdo do Curso
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {cursoMock.modulos.map((mod, i) => (
+            {cursoMock.modulos.map((mod: any, i: number) => (
               <div
                 key={i}
                 style={{

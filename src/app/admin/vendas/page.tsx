@@ -391,7 +391,7 @@ export default function AdminVendas() {
 
                     {/* Método e Referência */}
                     <td style={{ padding: "14px 18px" }}>
-                      <div style={{ color: "#e2e8f0", fontWeight: "600", fontSize: "12px", display: "flex", items: "center", gap: "4px" }}>
+                      <div style={{ color: "#e2e8f0", fontWeight: "600", fontSize: "12px", display: "flex", alignItems: "center", gap: "4px" }}>
                         <span>{item.metodoPagamento === "M-Pesa" ? "🔴" : item.metodoPagamento === "e-Mola" ? "🟡" : "💳"}</span>
                         <span>{item.metodoPagamento}</span>
                       </div>
