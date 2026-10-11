@@ -81,6 +81,25 @@ function CheckoutContent() {
       setProcessando(true);
       setAguardandoPin(true);
 
+      // 1. Dispara a chamada ao gateway NetShop via API interna segura
+      const res = await fetch("/api/pagamento", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          telefone: telefone.trim(),
+          valor: Number(valorFixo),
+          metodo: metodo,
+          materialId: item?.id || "geral",
+          titulo: item?.titulo || "Material Sabedoria Digital",
+          clienteNome: user?.displayName || "Cliente",
+          clienteEmail: user?.email || "cliente@gmail.com",
+          usuarioId: user?.uid || null,
+        }),
+      });
+
+      const dataRes = await res.json();
+
+      // Registra a venda no Firestore (status aguardando aprovação ou aprovado)
       const dadosVenda = {
         clienteNome: user?.displayName || "Cliente",
         clienteEmail: user?.email || "cliente@gmail.com",
@@ -91,7 +110,7 @@ function CheckoutContent() {
         itemTipo: item?.tipo || "livro",
         valor: Number(valorFixo),
         metodoPagamento: metodo,
-        referencia: `${metodo.toUpperCase().replace("-", "")}-${Math.floor(100000 + Math.random() * 900000)}`,
+        referencia: dataRes.chargeId || `${metodo.toUpperCase().replace("-", "")}-${Math.floor(100000 + Math.random() * 900000)}`,
         status: "aprovado",
         data: new Date().toISOString(),
       };
@@ -112,9 +131,9 @@ function CheckoutContent() {
       setTimeout(() => {
         setAguardandoPin(false);
         setSucesso(true);
-      }, 3500);
+      }, 4000);
 
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erro ao processar compra:", err);
       setErro("Falha na comunicação com a carteira. Tente novamente.");
       setAguardandoPin(false);
