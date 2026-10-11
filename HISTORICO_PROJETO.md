@@ -121,10 +121,22 @@ Campos de cada documento:
   - Filtros por status (`Todos`, `Aprovado`, `Pendente`, `Rejeitado`) e barra de busca instantânea.
   - Ações para aprovar pagamentos pendentes e exclusão de registros.
   - Modal para registro de vendas manuais/simuladas salvas diretamente no Firestore.
-- **Tela de Checkout & Pagamento Móvel Concluída (`/checkout`):**
-  - Design compacto e focado, sem informações excessivas.
-  - Seleção rápida de carteira: **🔴 M-Pesa** ou **🟡 e-Mola**.
-  - Exibe resumo do material (capa, título e preço em MT).
-  - Formulário simplificado: Número de telefone e código de confirmação.
-  - Gravação automática no **Painel de Vendas (`/admin/vendas`)** e liberação imediata na **Minha Biblioteca (`/minha-conta`)**.
-- Ciclo de vendas 100% completo e operacional!
+- **Deploy em Produção (Vercel) & GitHub Concluído:**
+  - Repositório sincronizado: `https://github.com/jaimitonhama-droid/Wandra.git`
+  - Domínio público ativo e funcional: `https://wandra-cursos.vercel.app`
+- **Integração NetShop & Webhook Configurada:**
+  - Chaves salvas de forma segura em `.env.local`:
+    - `NETSHOP_API_KEY`: configurada.
+    - `NETSHOP_WEBHOOK_SECRET`: `whsec_42dc34b80ce3632e127e20cdcbe076251d472ad66ed1e5e8` salva.
+  - Endpoint de webhook público criado: `https://wandra-cursos.vercel.app/api/webhooks/netshop`
+  - Webhook criado e ativo no painel da NetShop com eventos `charge.paid`, `charge.failed`, etc.
+
+---
+
+## 📍 6. Ponto Exato de Parada (Para Retomada Imediata)
+- **Situação Atual Identificada:**
+  - No painel da NetShop (`netshop.co.mz/app/carteiras`), as carteiras de saque/recebimento para **M-Pesa** e **e-Mola** apareceram com o status de **"INDISPONÍVEL"**.
+- **O que fazer logo ao retornar:**
+  1. Verificar o menu de **`Compliance`** ou **`Definições`** no painel da NetShop para verificar se a conta precisa de aprovação de documentos (BI/NUIT) para liberar as carteiras móveis.
+  2. Alternativamente, definir se continuaremos com a NetShop ou se ativamos o fluxo direto de pagamento móvel para o seu número com aprovação manual no painel de vendas (`/admin/vendas`) sem a taxa de 10%.
+
