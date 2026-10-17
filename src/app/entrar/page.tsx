@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail
 } from "firebase/auth";
 import { auth } from "@/services/firebase";
+import { IconAlert, IconCheck, IconEye, IconEyeOff } from "@/components/Icons";
 
 export default function EntrarPage() {
   const router = useRouter();
@@ -78,14 +79,14 @@ export default function EntrarPage() {
 
           {erro && (
             <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300 text-xs flex items-center gap-2">
-              <span>⚠️</span>
+              <IconAlert size={16} className="text-red-400 shrink-0" />
               <span>{erro}</span>
             </div>
           )}
 
           {msgSucesso && (
             <div className="mb-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-center gap-2">
-              <span>✅</span>
+              <IconCheck size={16} className="text-emerald-400 shrink-0" />
               <span>{msgSucesso}</span>
             </div>
           )}
@@ -130,9 +131,10 @@ export default function EntrarPage() {
                 <button
                   type="button"
                   onClick={() => setMostrarSenha(!mostrarSenha)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#5a6a7a] hover:text-white transition-colors text-xs"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#5a6a7a] hover:text-white transition-colors"
+                  aria-label={mostrarSenha ? "Ocultar senha" : "Ver senha"}
                 >
-                  {mostrarSenha ? "🙈" : "👁️"}
+                  {mostrarSenha ? <IconEyeOff size={16} /> : <IconEye size={16} />}
                 </button>
               </div>
             </div>

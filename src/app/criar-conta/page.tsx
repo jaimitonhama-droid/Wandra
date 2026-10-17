@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
+import { IconAlert, IconEye, IconEyeOff } from "@/components/Icons";
 
 export default function CriarContaPage() {
   const router = useRouter();
@@ -89,7 +90,7 @@ export default function CriarContaPage() {
 
           {erro && (
             <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300 text-xs flex items-center gap-2">
-              <span>⚠️</span>
+              <IconAlert size={16} className="text-red-400 shrink-0" />
               <span>{erro}</span>
             </div>
           )}
@@ -139,9 +140,10 @@ export default function CriarContaPage() {
                 <button
                   type="button"
                   onClick={() => setMostrarSenha(!mostrarSenha)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#5a6a7a] hover:text-white transition-colors text-xs"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#5a6a7a] hover:text-white transition-colors"
+                  aria-label={mostrarSenha ? "Ocultar senha" : "Ver senha"}
                 >
-                  {mostrarSenha ? "🙈" : "👁️"}
+                  {mostrarSenha ? <IconEyeOff size={16} /> : <IconEye size={16} />}
                 </button>
               </div>
             </div>

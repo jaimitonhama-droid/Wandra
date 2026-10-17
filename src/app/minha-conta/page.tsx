@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
+import { IconHome, IconLogOut, IconSettings, IconClose, IconBook, IconEbook, IconVideo, IconCheck } from "@/components/Icons";
 
 interface MaterialItem {
   id: string;
@@ -200,8 +201,9 @@ export default function MinhaContaPage() {
           <button
             onClick={() => setSidebarAberto(false)}
             className="md:hidden text-[#9baab8] hover:text-white p-1"
+            aria-label="Fechar menu"
           >
-            ✕
+            <IconClose size={20} />
           </button>
         </div>
 
@@ -303,52 +305,45 @@ export default function MinhaContaPage() {
         </div>
       </aside>
 
-      {/* Overlay Mobile */}
-      {sidebarAberto && (
-        <div
-          onClick={() => setSidebarAberto(false)}
-          className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-xs"
-        />
-      )}
+      {/* Overlay Mobile (removido — replaced by bottom nav) */}
 
       {/* ÁREA PRINCIPAL DE CONTEÚDO (CONFORME O MENU SELECIONADO) */}
-      <div className="flex-1 md:ml-64 flex flex-col min-h-screen">
+      <div className="flex-1 md:ml-64 flex flex-col min-h-screen" style={{ paddingBottom: 0 }}>
         
         {/* Barra Superior */}
         <header className="h-16 border-b border-white/[0.07] bg-[#0a0f1d]/80 backdrop-blur-md sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSidebarAberto(true)}
-              className="md:hidden p-2 rounded-lg bg-white/5 text-white"
-            >
-              ☰
-            </button>
-            <h2 className="text-base sm:text-lg font-bold text-white font-serif">
+            {/* Logo mobile — só aparece quando sidebar está oculta */}
+            <div className="flex md:hidden items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#917228] flex items-center justify-center font-bold text-black text-xs">S</div>
+              <span className="text-xs font-bold text-[#c9a84c]">Área do Aluno</span>
+            </div>
+            <h2 className="hidden md:block text-base sm:text-lg font-bold text-white font-serif">
               {NAV_ITEMS.find((n) => n.id === menuAtivo)?.label}
             </h2>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {user?.email?.toLowerCase() === "jaimitonhama@gmail.com" && (
               <Link
                 href="/admin"
-                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition-all text-decoration-none flex items-center gap-1.5 shadow-sm"
+                className="text-xs font-semibold px-2 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition-all text-decoration-none flex items-center gap-1"
               >
                 <span>⚙️</span>
-                <span>Painel Admin</span>
+                <span className="hidden sm:inline">Painel Admin</span>
               </Link>
             )}
             <Link
               href="/livros"
-              className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20 hover:bg-[#c9a84c]/20 transition-all text-decoration-none"
+              className="text-xs font-semibold px-2 sm:px-3 py-1.5 rounded-lg bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20 hover:bg-[#c9a84c]/20 transition-all text-decoration-none"
             >
-              + Explorar Catálogo
+              + Catálogo
             </Link>
           </div>
         </header>
 
         {/* CORPO DINÂMICO CONFORME O MENU CLICADO */}
-        <main className="flex-1 p-4 sm:p-8 max-w-5xl w-full">
+        <main className="flex-1 p-4 sm:p-8 max-w-5xl w-full" style={{ paddingBottom: '96px' }}>
           
           {/* ===================== MENU 1: VISÃO GERAL (PAINEL) ===================== */}
           {menuAtivo === "painel" && (
@@ -718,6 +713,108 @@ export default function MinhaContaPage() {
 
         </main>
       </div>
+
+      {/* ===== MOBILE BOTTOM NAVIGATION ===== */}
+      <nav className="aluno-bottom-nav">
+        {NAV_ITEMS.map((item) => {
+          const ativo = menuAtivo === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setMenuAtivo(item.id)}
+              className={`aluno-bottom-nav-item ${ativo ? "aluno-bottom-nav-active" : ""}`}
+            >
+              <span className="aluno-bottom-nav-icon">{item.icon}</span>
+              <span className="aluno-bottom-nav-label">{item.label.split(" ")[0]}</span>
+              {ativo && <span className="aluno-bottom-nav-dot" />}
+            </button>
+          );
+        })}
+      </nav>
+
+      <style>{`
+        /* Desktop: sidebar visível, bottom nav oculta */
+        .aluno-bottom-nav { display: none; }
+
+        @media (max-width: 768px) {
+          /* Bottom Nav */
+          .aluno-bottom-nav {
+            display: flex !important;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(10,14,26,0.97) 0%, rgba(8,12,20,1) 100%);
+            border-top: 1px solid rgba(201,168,76,0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 6px 0 env(safe-area-inset-bottom, 6px);
+            justify-content: space-around;
+            align-items: flex-end;
+          }
+
+          .aluno-bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 8px 8px 4px;
+            background: none;
+            border: none;
+            color: #4a5568;
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            min-width: 52px;
+          }
+
+          .aluno-bottom-nav-active {
+            color: #c9a84c !important;
+          }
+
+          .aluno-bottom-nav-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 32px;
+            border-radius: 10px;
+            background: transparent;
+            transition: all 0.25s ease;
+          }
+
+          .aluno-bottom-nav-active .aluno-bottom-nav-icon {
+            background: rgba(201,168,76,0.15);
+            box-shadow: 0 2px 12px rgba(201,168,76,0.2);
+          }
+
+          .aluno-bottom-nav-label {
+            font-size: 9px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 52px;
+            text-overflow: ellipsis;
+          }
+
+          .aluno-bottom-nav-dot {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #c9a84c;
+            box-shadow: 0 0 6px rgba(201,168,76,0.6);
+          }
+        }
+      `}</style>
 
     </div>
   );

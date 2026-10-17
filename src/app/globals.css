@@ -32,6 +32,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background: var(--bg-main);
   color: var(--text-primary);
@@ -157,4 +162,30 @@ body {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
+}
+
+/* ===================== MOBILE RESPONSIVE TWEAKS ===================== */
+@media (max-width: 768px) {
+  .btn-primary {
+    padding: 11px 22px;
+    font-size: 0.88rem;
+  }
+  .btn-outline {
+    padding: 10px 20px;
+    font-size: 0.88rem;
+  }
+  .hero-buttons-mobile {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .hero-buttons-mobile a,
+  .hero-buttons-mobile button {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .section-mobile-pad {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }

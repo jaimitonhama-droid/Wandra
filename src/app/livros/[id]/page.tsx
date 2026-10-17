@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
+import { IconBook, IconFileText, IconStar } from "@/components/Icons";
 
 interface Livro {
   id: string;
@@ -112,7 +113,9 @@ export default function LivroDetailPage() {
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : (
-                <span style={{ fontSize: "5rem", opacity: 0.3 }}>📖</span>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#c9a84c", opacity: 0.3 }}>
+                  <IconBook size={72} />
+                </div>
               )}
             </div>
 
@@ -150,9 +153,13 @@ export default function LivroDetailPage() {
                 por <span style={{ color: "#f0f4f8" }}>{livro.autor}</span>
               </p>
               
-              <div style={{ display: "flex", gap: "24px", color: "#5a6a7a", fontSize: "0.95rem", marginBottom: "40px" }}>
-                <span>💾 Formato PDF Digital</span>
-                <span style={{ color: "#c9a84c" }}>⭐ 5.0 (Novo lançamento)</span>
+              <div style={{ display: "flex", gap: "24px", color: "#5a6a7a", fontSize: "0.95rem", marginBottom: "40px", alignItems: "center", flexWrap: "wrap" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <IconFileText size={16} /> Formato PDF Digital
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#c9a84c" }}>
+                  <IconStar size={16} filled /> 5.0 (Novo lançamento)
+                </span>
               </div>
 
               <div
@@ -195,7 +202,7 @@ export default function LivroDetailPage() {
                       boxShadow: "0 10px 30px rgba(201, 168, 76, 0.2)",
                     }}
                   >
-                    📖 Comprar Agora ({livro.preco || 350} MT)
+                    Comprar Agora ({livro.preco || 350} MT)
                   </Link>
                 ) : (
                   <button

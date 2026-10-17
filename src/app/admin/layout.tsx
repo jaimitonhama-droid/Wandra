@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   {
     href: "/admin",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
         <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
       </svg>
@@ -19,16 +19,16 @@ const NAV_ITEMS = [
   {
     href: "/admin/livros",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
       </svg>
     ),
-    label: "Livros & E-books",
+    label: "Livros",
   },
   {
     href: "/admin/cursos",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
       </svg>
     ),
@@ -37,7 +37,7 @@ const NAV_ITEMS = [
   {
     href: "/admin/alunos",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
         <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
@@ -47,7 +47,7 @@ const NAV_ITEMS = [
   {
     href: "/admin/vendas",
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
       </svg>
     ),
@@ -58,12 +58,13 @@ const NAV_ITEMS = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<string | null>(null);
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#080c14", fontFamily: "var(--font-inter, sans-serif)" }}>
 
-      {/* SIDEBAR */}
-      <aside style={{
+      {/* ===== SIDEBAR DESKTOP (só aparece em md+) ===== */}
+      <aside className="admin-sidebar-desktop" style={{
         width: collapsed ? "72px" : "260px",
         minHeight: "100vh",
         background: "linear-gradient(180deg, #0d1320 0%, #0a1028 100%)",
@@ -128,10 +129,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              {collapsed
-                ? <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
-                : <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
-              }
+              <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
         </div>
@@ -183,7 +181,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   )}
                 </Link>
 
-                {/* 4 Sub-menus de Vendas */}
+                {/* Sub-menus de Vendas */}
                 {item.href === "/admin/vendas" && pathname.startsWith("/admin/vendas") && !collapsed && (
                   <div style={{
                     marginLeft: "24px",
@@ -195,75 +193,31 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     flexDirection: "column",
                     gap: "2px",
                   }}>
-                    <a
-                      href="#metricas"
-                      style={{
-                        padding: "6px 8px",
-                        fontSize: "12px",
-                        color: "#9baab8",
-                        textDecoration: "none",
-                        borderRadius: "6px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                      }}
-                      className="hover:text-white hover:bg-white/5"
-                    >
-                      <span>📊</span>
-                      <span>1. Receita & Métricas</span>
-                    </a>
-                    <a
-                      href="#transacoes"
-                      style={{
-                        padding: "6px 8px",
-                        fontSize: "12px",
-                        color: "#9baab8",
-                        textDecoration: "none",
-                        borderRadius: "6px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                      }}
-                      className="hover:text-white hover:bg-white/5"
-                    >
-                      <span>💳</span>
-                      <span>2. Transações (M-Pesa)</span>
-                    </a>
-                    <a
-                      href="#pendentes"
-                      style={{
-                        padding: "6px 8px",
-                        fontSize: "12px",
-                        color: "#9baab8",
-                        textDecoration: "none",
-                        borderRadius: "6px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                      }}
-                      className="hover:text-white hover:bg-white/5"
-                    >
-                      <span>⏳</span>
-                      <span>3. Aprovações Pendentes</span>
-                    </a>
-                    <a
-                      href="#nova-venda"
-                      style={{
-                        padding: "6px 8px",
-                        fontSize: "12px",
-                        color: "#f5a623",
-                        textDecoration: "none",
-                        borderRadius: "6px",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        fontWeight: "600",
-                      }}
-                      className="hover:brightness-110 hover:bg-white/5"
-                    >
-                      <span>➕</span>
-                      <span>4. Registrar Venda</span>
-                    </a>
+                    {[
+                      { href: "#metricas", icon: "📊", label: "1. Receita & Métricas" },
+                      { href: "#transacoes", icon: "💳", label: "2. Transações (M-Pesa)" },
+                      { href: "#pendentes", icon: "⏳", label: "3. Aprovações Pendentes" },
+                      { href: "#nova-venda", icon: "➕", label: "4. Registrar Venda", gold: true },
+                    ].map((sub) => (
+                      <a
+                        key={sub.href}
+                        href={sub.href}
+                        style={{
+                          padding: "6px 8px",
+                          fontSize: "12px",
+                          color: sub.gold ? "#f5a623" : "#9baab8",
+                          textDecoration: "none",
+                          borderRadius: "6px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          fontWeight: sub.gold ? "600" : "400",
+                        }}
+                      >
+                        <span>{sub.icon}</span>
+                        <span>{sub.label}</span>
+                      </a>
+                    ))}
                   </div>
                 )}
               </div>
@@ -296,11 +250,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
-      <main style={{
+      {/* ===== MAIN CONTENT ===== */}
+      <main className="admin-main-content" style={{
         flex: 1,
-        marginLeft: collapsed ? "72px" : "260px",
-        transition: "margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -314,14 +266,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 32px",
+          padding: "0 20px",
           position: "sticky",
           top: 0,
           zIndex: 40,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span style={{ color: "#444", fontSize: "13px" }}>Painel de</span>
-            <span style={{ color: "#f5a623", fontSize: "13px", fontWeight: "600" }}>Administração</span>
+            {/* Logo para mobile (só aparece quando a sidebar está oculta) */}
+            <div className="admin-mobile-logo" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{
+                width: "30px", height: "30px",
+                background: "linear-gradient(135deg, #f5a623, #e8890a)",
+                borderRadius: "8px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontWeight: "800", color: "#000", fontSize: "14px",
+              }}>S</div>
+              <span style={{ color: "#f5a623", fontWeight: "700", fontSize: "13px" }}>Admin</span>
+            </div>
+            <span className="admin-topbar-label" style={{ color: "#444", fontSize: "13px" }}>Painel de</span>
+            <span className="admin-topbar-label" style={{ color: "#f5a623", fontSize: "13px", fontWeight: "600" }}>Administração</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <Link href="/" target="_blank" style={{
@@ -339,16 +302,135 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
               </svg>
-              Ver Site
+              <span className="admin-topbar-ver-site">Ver Site</span>
             </Link>
           </div>
         </header>
 
         {/* Page Content */}
-        <div style={{ flex: 1, padding: "32px" }}>
+        <div style={{ flex: 1, padding: "24px 20px", paddingBottom: "96px" }}>
           {children}
         </div>
       </main>
+
+      {/* ===== BOTTOM NAV MOBILE ===== */}
+      <nav className="admin-bottom-nav">
+        {NAV_ITEMS.map((item) => {
+          const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`admin-bottom-nav-item ${isActive ? "admin-bottom-nav-active" : ""}`}
+            >
+              <span className="admin-bottom-nav-icon">{item.icon}</span>
+              <span className="admin-bottom-nav-label">{item.label}</span>
+              {isActive && <span className="admin-bottom-nav-dot" />}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <style>{`
+        /* ===================== DESKTOP SIDEBAR ===================== */
+        .admin-sidebar-desktop {
+          display: flex !important;
+        }
+        .admin-main-content {
+          margin-left: ${collapsed ? "72px" : "260px"};
+          transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .admin-mobile-logo { display: none; }
+        .admin-bottom-nav { display: none; }
+
+        /* ===================== MOBILE (≤ 768px) ===================== */
+        @media (max-width: 768px) {
+          .admin-sidebar-desktop {
+            display: none !important;
+          }
+          .admin-main-content {
+            margin-left: 0 !important;
+          }
+          .admin-mobile-logo {
+            display: flex !important;
+          }
+          .admin-topbar-label { display: none; }
+          .admin-topbar-ver-site { display: none; }
+
+          /* Bottom Nav */
+          .admin-bottom-nav {
+            display: flex !important;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(10,14,22,0.97) 0%, rgba(8,12,20,1) 100%);
+            border-top: 1px solid rgba(245,166,35,0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 6px 0 env(safe-area-inset-bottom, 6px);
+            justify-content: space-around;
+            align-items: flex-end;
+          }
+
+          .admin-bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 8px 10px 4px;
+            text-decoration: none;
+            color: #5a6a7a;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            position: relative;
+            min-width: 52px;
+          }
+
+          .admin-bottom-nav-active {
+            color: #f5a623 !important;
+          }
+
+          .admin-bottom-nav-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 32px;
+            border-radius: 10px;
+            background: transparent;
+            transition: all 0.25s ease;
+          }
+
+          .admin-bottom-nav-active .admin-bottom-nav-icon {
+            background: rgba(245,166,35,0.15);
+            box-shadow: 0 2px 12px rgba(245,166,35,0.2);
+          }
+
+          .admin-bottom-nav-label {
+            font-size: 9.5px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: color 0.2s;
+          }
+
+          .admin-bottom-nav-dot {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #f5a623;
+            box-shadow: 0 0 6px rgba(245,166,35,0.6);
+          }
+        }
+      `}</style>
     </div>
   );
 }

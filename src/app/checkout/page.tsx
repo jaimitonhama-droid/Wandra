@@ -7,6 +7,7 @@ import Image from "next/image";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
+import { IconLock, IconCheck, IconEbook } from "@/components/Icons";
 
 function CheckoutContent() {
   const router = useRouter();
@@ -155,8 +156,8 @@ function CheckoutContent() {
     return (
       <div className="min-h-screen bg-[#080c14] text-white flex items-center justify-center p-4 font-sans">
         <div className="w-full max-w-sm bg-[#0f172a] border border-[#c9a84c]/30 rounded-2xl p-6 text-center shadow-2xl">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center mx-auto mb-4 text-2xl">
-            📲
+          <div className="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center mx-auto mb-4 text-amber-400">
+            <IconEbook size={28} />
           </div>
           <h2 className="text-base font-bold font-serif mb-1 text-white">
             Verifique o seu telemóvel
@@ -179,8 +180,8 @@ function CheckoutContent() {
     return (
       <div className="min-h-screen bg-[#080c14] text-white flex items-center justify-center p-4 font-sans">
         <div className="w-full max-w-sm bg-[#0f172a] border border-emerald-500/30 rounded-2xl p-6 text-center shadow-2xl">
-          <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 text-xl flex items-center justify-center mx-auto mb-3">
-            ✓
+          <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3">
+            <IconCheck size={22} />
           </div>
           <h2 className="text-base font-bold font-serif mb-1">Pagamento Aprovado!</h2>
           <p className="text-xs text-[#9baab8] mb-5">
@@ -223,7 +224,7 @@ function CheckoutContent() {
               ← Voltar
             </button>
             <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1">
-              <span>🔒</span> Pagamento Seguro
+              <IconLock size={12} /> Pagamento Seguro
             </span>
           </div>
 
@@ -338,7 +339,7 @@ function CheckoutContent() {
           {/* Mensagem Informativa de Rodapé em Destaque Nítido */}
           <div className="mt-4 pt-3 border-t border-white/5 text-center">
             <p className="text-[11px] font-medium text-amber-200/90 leading-snug">
-              📲 Receberá um aviso instantâneo no celular para digitar o PIN
+              Receberá um aviso instantâneo no celular para digitar o PIN
             </p>
           </div>
         </div>

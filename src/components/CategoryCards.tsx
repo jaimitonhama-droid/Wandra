@@ -3,16 +3,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import FadeIn from "@/components/FadeIn";
+import { IconBook, IconVideo, IconEbook } from "@/components/Icons";
 
 const categories = [
   {
     id: "livros",
     href: "/livros",
-    emoji: "📖",
+    icon: IconBook,
     title: "Livros Digitais",
     subtitle: "Obras Completas",
     description:
-      "Mergulhe em histórias, conhecimentos e descobertas. Centenas de livros digitais em PDF para ler a qualquer hora, em qualquer dispositivo.",
+      "Centenas de livros digitais em PDF para ler a qualquer hora, em qualquer dispositivo.",
     image: "/card_livros.jpg",
     badge: "Mais Populares",
     badgeColor: "#c9a84c",
@@ -26,11 +27,11 @@ const categories = [
   {
     id: "cursos",
     href: "/cursos",
-    emoji: "🎬",
+    icon: IconVideo,
     title: "Vídeo-Aulas",
     subtitle: "Cursos Completos",
     description:
-      "Aprenda com especialistas através de aulas em vídeo de alta qualidade. Estude ao seu ritmo e evolua profissionalmente.",
+      "Aprenda com especialistas através de aulas em vídeo de alta qualidade.",
     image: "/card_cursos.jpg",
     badge: "Em Destaque",
     badgeColor: "#4a9eff",
@@ -44,11 +45,11 @@ const categories = [
   {
     id: "ebooks",
     href: "/ebooks",
-    emoji: "📱",
+    icon: IconEbook,
     title: "E-books",
     subtitle: "Guias Práticos",
     description:
-      "Conteúdo directo e prático para aplicar imediatamente. Guias, manuais e resumos sobre os mais variados temas.",
+      "Conteúdo directo e prático para aplicar imediatamente. Guias e manuais diversos.",
     image: "/card_ebooks.jpg",
     badge: "Novo",
     badgeColor: "#34d399",
@@ -65,23 +66,23 @@ export default function CategoryCards() {
   return (
     <section
       id="categorias"
+      className="category-section"
       style={{
-        padding: "80px 40px 120px",
         maxWidth: "1200px",
         margin: "0 auto",
       }}
     >
       {/* Título da Secção */}
       <FadeIn>
-        <div style={{ textAlign: "center", marginBottom: "60px" }}>
+        <div style={{ textAlign: "center", marginBottom: "44px" }}>
         <p
           style={{
             color: "#c9a84c",
-            fontSize: "0.85rem",
+            fontSize: "0.8rem",
             fontWeight: 700,
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            marginBottom: "12px",
+            marginBottom: "10px",
           }}
         >
           — Explore o nosso universo —
@@ -89,11 +90,11 @@ export default function CategoryCards() {
         <h2
           style={{
             fontFamily: "var(--font-playfair), Georgia, serif",
-            fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+            fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)",
             fontWeight: 700,
             color: "#f0f4f8",
             lineHeight: 1.2,
-            marginBottom: "16px",
+            marginBottom: "12px",
           }}
         >
           Como deseja aprender hoje?
@@ -101,10 +102,10 @@ export default function CategoryCards() {
         <p
           style={{
             color: "#9baab8",
-            fontSize: "1.05rem",
-            maxWidth: "520px",
+            fontSize: "0.95rem",
+            maxWidth: "480px",
             margin: "0 auto",
-            lineHeight: 1.7,
+            lineHeight: 1.6,
           }}
         >
           Escolha a sua categoria e aceda a conteúdo de qualidade profissional,
@@ -114,13 +115,7 @@ export default function CategoryCards() {
       </FadeIn>
 
       {/* Grid de Cartões */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "28px",
-        }}
-      >
+      <div className="category-grid">
         {categories.map((cat) => (
           <Link
             key={cat.id}
@@ -129,98 +124,93 @@ export default function CategoryCards() {
             style={{
               textDecoration: "none",
               display: "block",
-              borderRadius: "20px",
+              borderRadius: "16px",
               overflow: "hidden",
               position: "relative",
               border: "1px solid rgba(255,255,255,0.08)",
-              transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+              transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
               animationDelay: cat.delay,
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(-8px)";
-              el.style.borderColor = cat.accentColor + "66";
-              el.style.boxShadow = `0 30px 60px rgba(0,0,0,0.4), 0 0 0 1px ${cat.accentColor}33`;
+              el.style.transform = "translateY(-6px) scale(1.01)";
+              el.style.borderColor = cat.accentColor + "55";
+              el.style.boxShadow = `0 20px 40px rgba(0,0,0,0.35), 0 0 0 1px ${cat.accentColor}22`;
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(0)";
+              el.style.transform = "translateY(0) scale(1)";
               el.style.borderColor = "rgba(255,255,255,0.08)";
               el.style.boxShadow = "none";
             }}
           >
-            {/* Imagem */}
-            <div style={{ position: "relative", height: "220px" }}>
+            {/* Imagem — compacta */}
+            <div className="category-card-img" style={{ position: "relative" }}>
               <Image
                 src={cat.image}
                 alt={cat.title}
                 fill
                 style={{ objectFit: "cover" }}
-                sizes="(max-width: 768px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 380px"
               />
               {/* Overlay Gradiente */}
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
-                  background: `linear-gradient(to top, rgba(10,13,20,1) 0%, rgba(10,13,20,0.4) 60%, transparent 100%)`,
+                  background: `linear-gradient(to top, rgba(10,13,20,1) 0%, rgba(10,13,20,0.3) 60%, transparent 100%)`,
                 }}
               />
               {/* Badge */}
               <div
                 style={{
                   position: "absolute",
-                  top: "16px",
-                  right: "16px",
+                  top: "12px",
+                  right: "12px",
                   background: cat.badgeColor,
                   color: "#0a0d14",
-                  fontSize: "0.72rem",
+                  fontSize: "0.68rem",
                   fontWeight: 800,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
-                  padding: "5px 12px",
+                  padding: "4px 10px",
                   borderRadius: "50px",
                 }}
               >
                 {cat.badge}
               </div>
-              {/* Emoji grande */}
+              {/* Icon */}
               <div
                 style={{
                   position: "absolute",
-                  bottom: "-20px",
-                  left: "24px",
-                  width: "52px",
-                  height: "52px",
-                  borderRadius: "14px",
+                  bottom: "-18px",
+                  left: "20px",
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "12px",
                   background: "rgba(10,13,20,0.9)",
-                  border: `2px solid ${cat.accentColor}66`,
+                  border: `2px solid ${cat.accentColor}55`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "24px",
+                  color: cat.accentColor,
                   backdropFilter: "blur(10px)",
                 }}
               >
-                {cat.emoji}
+                <cat.icon size={20} />
               </div>
             </div>
 
-            {/* Conteúdo do Cartão */}
-            <div
-              style={{
-                background: "rgba(15, 20, 30, 0.95)",
-                padding: "36px 24px 28px",
-              }}
-            >
+            {/* Conteúdo do Cartão — compacto */}
+            <div className="category-card-body">
               <p
                 style={{
                   color: cat.accentColor,
-                  fontSize: "0.75rem",
+                  fontSize: "0.7rem",
                   fontWeight: 700,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  marginBottom: "6px",
+                  marginBottom: "4px",
                 }}
               >
                 {cat.subtitle}
@@ -228,10 +218,10 @@ export default function CategoryCards() {
               <h3
                 style={{
                   fontFamily: "var(--font-playfair), Georgia, serif",
-                  fontSize: "1.5rem",
+                  fontSize: "1.3rem",
                   fontWeight: 700,
                   color: "#f0f4f8",
-                  marginBottom: "12px",
+                  marginBottom: "8px",
                   lineHeight: 1.2,
                 }}
               >
@@ -240,67 +230,95 @@ export default function CategoryCards() {
               <p
                 style={{
                   color: "#9baab8",
-                  fontSize: "0.9rem",
-                  lineHeight: 1.7,
-                  marginBottom: "24px",
+                  fontSize: "0.85rem",
+                  lineHeight: 1.6,
+                  marginBottom: "16px",
                 }}
               >
                 {cat.description}
               </p>
 
-              {/* Stats */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "24px",
-                  padding: "16px 0",
-                  borderTop: "1px solid rgba(255,255,255,0.07)",
-                  marginBottom: "20px",
-                }}
-              >
-                {cat.stats.map((s) => (
-                  <div key={s.label}>
-                    <p
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: 800,
-                        color: cat.accentColor,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {s.value}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: "0.78rem",
-                        color: "#5a6a7a",
-                        marginTop: "3px",
-                      }}
-                    >
-                      {s.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA */}
+              {/* Stats + CTA em linha */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "8px",
-                  color: cat.accentColor,
-                  fontWeight: 600,
-                  fontSize: "0.9rem",
+                  justifyContent: "space-between",
+                  paddingTop: "14px",
+                  borderTop: "1px solid rgba(255,255,255,0.07)",
                 }}
               >
-                Explorar agora
-                <span style={{ fontSize: "1.1rem", transition: "transform 0.2s" }}>→</span>
+                <div style={{ display: "flex", gap: "16px" }}>
+                  {cat.stats.map((s) => (
+                    <div key={s.label} style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
+                      <span
+                        style={{
+                          fontSize: "1rem",
+                          fontWeight: 800,
+                          color: cat.accentColor,
+                        }}
+                      >
+                        {s.value}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "0.7rem",
+                          color: "#5a6a7a",
+                        }}
+                      >
+                        {s.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <span
+                  style={{
+                    color: cat.accentColor,
+                    fontWeight: 600,
+                    fontSize: "0.82rem",
+                  }}
+                >
+                  Explorar →
+                </span>
               </div>
             </div>
           </Link>
         ))}
       </div>
+
+      <style>{`
+        .category-section {
+          padding: 60px 40px 80px;
+        }
+        .category-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 24px;
+        }
+        .category-card-img {
+          height: 160px;
+        }
+        .category-card-body {
+          background: rgba(15, 20, 30, 0.95);
+          padding: 26px 20px 20px;
+        }
+        @media (max-width: 768px) {
+          .category-section {
+            padding: 40px 16px 50px !important;
+          }
+          .category-grid {
+            grid-template-columns: 1fr !important;
+            gap: 18px !important;
+          }
+          .category-card-img {
+            height: 135px !important;
+          }
+          .category-card-body {
+            padding: 22px 16px 16px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

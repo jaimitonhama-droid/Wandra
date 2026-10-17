@@ -8,10 +8,11 @@ import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase";
+import { IconBriefcase, IconBrain, IconBook, IconEbook, IconStar } from "@/components/Icons";
 
 const categorias = [
-  { icon: "💼", label: "Negócios" },
-  { icon: "🧠", label: "Desenvolvimento Pessoal" },
+  { icon: IconBriefcase, label: "Negócios" },
+  { icon: IconBrain, label: "Desenvolvimento Pessoal" },
 ];
 
 interface Livro {
@@ -29,10 +30,16 @@ interface Livro {
 
 function EstrelaRating({ rating = 5 }: { rating?: number }) {
   return (
-    <span style={{ color: "#c9a84c", fontSize: "0.8rem" }}>
-      {"★".repeat(Math.floor(rating))}
-      {"☆".repeat(5 - Math.floor(rating))}
-    </span>
+    <div style={{ display: "inline-flex", gap: "2px" }}>
+      {Array.from({ length: 5 }).map((_, idx) => (
+        <IconStar
+          key={idx}
+          size={13}
+          filled={idx < Math.floor(rating)}
+          style={{ color: "#c9a84c" }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -66,12 +73,11 @@ export default function LivrosPage() {
       <main style={{ background: "#0a0d14", minHeight: "100vh" }}>
         {/* ===== HERO ===== */}
         <section
+          className="livros-hero"
           style={{
             position: "relative",
-            height: "480px",
             display: "flex",
             alignItems: "flex-end",
-            padding: "0 40px 60px",
             overflow: "hidden",
           }}
         >
@@ -110,7 +116,7 @@ export default function LivrosPage() {
                 marginBottom: "12px",
               }}
             >
-              📖 Livraria Digital
+              Livraria Digital
             </p>
             <h1
               style={{
@@ -150,7 +156,7 @@ export default function LivrosPage() {
         </section>
 
         {/* ===== CATEGORIAS ===== */}
-        <section style={{ padding: "48px 40px 0", maxWidth: "1200px", margin: "0 auto" }}>
+        <section className="livros-filtros" style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <FadeIn>
             <h2
               style={{
@@ -190,7 +196,7 @@ export default function LivrosPage() {
                   transition: "all 0.2s ease",
                 }}
               >
-                ✨ Todos
+                Todos
               </button>
               {categorias.map((cat, i) => {
                 const ativo = categoriaSelecionada === cat.label;
@@ -214,7 +220,7 @@ export default function LivrosPage() {
                       transition: "all 0.2s ease",
                     }}
                   >
-                    {cat.icon} {cat.label}
+                    <cat.icon size={16} /> {cat.label}
                   </button>
                 );
               })}
@@ -225,7 +231,8 @@ export default function LivrosPage() {
         {/* ===== DESTAQUES ===== */}
         <section
           id="colecao"
-          style={{ padding: "48px 40px 80px", maxWidth: "1200px", margin: "0 auto" }}
+          className="livros-colecao-sec"
+          style={{ maxWidth: "1200px", margin: "0 auto" }}
         >
           <FadeIn>
             <div
@@ -265,7 +272,7 @@ export default function LivrosPage() {
                     fontWeight: tipoFiltro === "todos" ? 700 : 500,
                   }}
                 >
-                  ✨ Todos
+                  Todos
                 </button>
                 <button
                   onClick={() => setTipoFiltro("livro")}
@@ -280,7 +287,7 @@ export default function LivrosPage() {
                     fontWeight: tipoFiltro === "livro" ? 700 : 500,
                   }}
                 >
-                  📖 Livros
+                  Livros
                 </button>
                 <button
                   onClick={() => setTipoFiltro("ebook")}
@@ -295,7 +302,7 @@ export default function LivrosPage() {
                     fontWeight: tipoFiltro === "ebook" ? 700 : 500,
                   }}
                 >
-                  📱 E-books
+                  E-books
                 </button>
               </div>
             </div>
@@ -303,7 +310,9 @@ export default function LivrosPage() {
 
           {loading ? (
             <div style={{ textAlign: "center", padding: "60px 0", color: "#c9a84c" }}>
-              <div style={{ fontSize: "2rem", marginBottom: "12px" }}>⏳</div>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "12px" }}>
+                <IconBook size={32} />
+              </div>
               <p style={{ fontSize: "1rem" }}>Carregando acervo de livros...</p>
             </div>
           ) : (() => {
@@ -328,8 +337,8 @@ export default function LivrosPage() {
                     border: "1px dashed rgba(255,255,255,0.1)",
                   }}
                 >
-                  <div style={{ fontSize: "3rem", marginBottom: "12px" }}>
-                    {tipoFiltro === "ebook" ? "📱" : "📖"}
+                  <div style={{ display: "flex", justifyContent: "center", marginBottom: "12px", color: "rgba(201,168,76,0.5)" }}>
+                    {tipoFiltro === "ebook" ? <IconEbook size={48} /> : <IconBook size={48} />}
                   </div>
                   <h3 style={{ color: "#f0f4f8", fontSize: "1.2rem", marginBottom: "8px" }}>
                     Nenhum {tipoFiltro === "ebook" ? "e-book" : "livro"} encontrado
@@ -404,7 +413,9 @@ export default function LivrosPage() {
                                 }}
                               />
                             ) : (
-                              <span style={{ fontSize: "3.5rem", opacity: 0.3 }}>{isEbook ? "📱" : "📖"}</span>
+                              <div style={{ opacity: 0.35, color: isEbook ? "#34d399" : "#c9a84c" }}>
+                                {isEbook ? <IconEbook size={54} /> : <IconBook size={54} />}
+                              </div>
                             )}
                             <span
                               style={{
@@ -420,7 +431,7 @@ export default function LivrosPage() {
                                 borderRadius: "50px",
                               }}
                             >
-                              {isEbook ? "📱 E-book" : "📖 Livro"}
+                              {isEbook ? "E-book" : "Livro"}
                             </span>
                           </div>
 
@@ -503,6 +514,32 @@ export default function LivrosPage() {
           );
         })()}
       </section>
+
+      <style>{`
+        .livros-hero {
+          height: 480px;
+          padding: 0 40px 60px;
+        }
+        .livros-filtros {
+          padding: 32px 40px 0;
+        }
+        .livros-colecao-sec {
+          padding: 48px 40px 80px;
+        }
+        @media (max-width: 768px) {
+          .livros-hero {
+            height: auto !important;
+            min-height: 320px !important;
+            padding: 90px 16px 36px !important;
+          }
+          .livros-filtros {
+            padding: 24px 16px 0 !important;
+          }
+          .livros-colecao-sec {
+            padding: 32px 16px 50px !important;
+          }
+        }
+      `}</style>
       </main>
       <Footer />
     </>

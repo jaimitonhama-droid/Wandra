@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { IconBook } from "@/components/Icons";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -40,10 +41,10 @@ export default function Footer() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "16px",
+                  color: "#0c1524",
                 }}
               >
-                📚
+                <IconBook size={18} />
               </div>
               <span
                 style={{
@@ -66,15 +67,19 @@ export default function Footer() {
             <h4 style={{ color: "#f0f4f8", fontWeight: 700, fontSize: "0.9rem", marginBottom: "16px", letterSpacing: "0.05em" }}>
               Plataforma
             </h4>
-            {["📖 Livros", "🎬 Cursos", "📱 E-books"].map((item) => (
+            {[
+              { label: "Livros", href: "/livros" },
+              { label: "Cursos", href: "/cursos" },
+              { label: "E-books", href: "/ebooks" },
+            ].map((item) => (
               <Link
-                key={item}
-                href={`/${item.split(" ")[1].toLowerCase()}`}
+                key={item.href}
+                href={item.href}
                 style={{ display: "block", color: "#5a6a7a", textDecoration: "none", fontSize: "0.88rem", marginBottom: "10px", transition: "color 0.2s" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#c9a84c"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#5a6a7a"; }}
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </div>
@@ -139,7 +144,7 @@ export default function Footer() {
           }}
         >
           <p style={{ color: "#5a6a7a", fontSize: "0.82rem" }}>
-            © {year} SabedoriaDigital. Todos os direitos reservados. 🇲🇿 Moçambique
+            © {year} SabedoriaDigital. Todos os direitos reservados. Moçambique
           </p>
           <p style={{ color: "#5a6a7a", fontSize: "0.82rem" }}>
             Pagamentos seguros via{" "}
@@ -150,13 +155,18 @@ export default function Footer() {
 
       <style>{`
         @media (max-width: 768px) {
+          #main-footer {
+            padding: 36px 16px 24px !important;
+          }
           .footer-grid {
             grid-template-columns: 1fr 1fr !important;
+            gap: 28px !important;
           }
         }
         @media (max-width: 480px) {
           .footer-grid {
             grid-template-columns: 1fr !important;
+            gap: 24px !important;
           }
         }
       `}</style>

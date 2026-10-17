@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase";
+import { IconEbook, IconZap, IconStar } from "@/components/Icons";
 
 interface RealEbook {
   id: string;
@@ -140,12 +141,11 @@ export default function EbooksPage() {
       <main style={{ background: "#0a0e0a", minHeight: "100vh" }}>
         {/* ===== HERO ===== */}
         <section
+          className="ebooks-page-hero"
           style={{
             position: "relative",
-            height: "440px",
             display: "flex",
             alignItems: "flex-end",
-            padding: "0 40px 60px",
             overflow: "hidden",
           }}
         >
@@ -184,7 +184,7 @@ export default function EbooksPage() {
                 marginBottom: "12px",
               }}
             >
-              📱 Loja de E-books
+              Loja de E-books
             </p>
             <h1
               style={{
@@ -254,7 +254,7 @@ export default function EbooksPage() {
         </section>
 
         {/* ===== FILTROS ===== */}
-        <section style={{ padding: "36px 40px 0", maxWidth: "1200px", margin: "0 auto" }}>
+        <section className="ebooks-page-filtros" style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <FadeIn>
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {categoriasEbook.map((cat, i) => (
@@ -296,13 +296,14 @@ export default function EbooksPage() {
         {/* ===== GRELHA DE EBOOKS ===== */}
         <section
           id="ebooks"
-          style={{ padding: "32px 40px 80px", maxWidth: "1200px", margin: "0 auto" }}
+          className="ebooks-page-grid-sec"
+          style={{ maxWidth: "1200px", margin: "0 auto" }}
         >
           {/* E-books Publicados via Admin */}
           {realEbooks.length > 0 && (
             <div style={{ marginBottom: "48px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px" }}>
-                <span style={{ fontSize: "1.2rem" }}>⚡</span>
+                <IconZap size={20} className="text-emerald-400" />
                 <h2 style={{ fontFamily: "var(--font-playfair), Georgia, serif", color: "#34d399", fontSize: "1.5rem", fontWeight: 700, margin: 0 }}>
                   E-books Publicados na Plataforma
                 </h2>
@@ -334,7 +335,9 @@ export default function EbooksPage() {
                           {reb.capaUrl ? (
                             <img src={reb.capaUrl} alt={reb.titulo} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                           ) : (
-                            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px" }}>📱</div>
+                            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#34d399", opacity: 0.4 }}>
+                              <IconEbook size={44} />
+                            </div>
                           )}
                           <span style={{
                             position: "absolute",
@@ -347,7 +350,7 @@ export default function EbooksPage() {
                             padding: "3px 10px",
                             borderRadius: "50px",
                           }}>
-                            📱 E-book
+                            E-book
                           </span>
                         </div>
                         <div style={{ padding: "18px", flex: 1, display: "flex", flexDirection: "column" }}>
@@ -426,7 +429,7 @@ export default function EbooksPage() {
                         position: "relative",
                       }}
                     >
-                      <span style={{ fontSize: "2.8rem" }}>📱</span>
+                      <IconEbook size={44} style={{ color: eb.acento, opacity: 0.6 }} />
                       {eb.tag && (
                         <span
                           style={{
@@ -502,13 +505,20 @@ export default function EbooksPage() {
                         }}
                       >
                         <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                          <span style={{ color: "#c9a84c" }}>
-                            {"★".repeat(Math.floor(eb.avaliacao))}
-                          </span>
+                          <div style={{ display: "inline-flex", gap: "1px" }}>
+                            {Array.from({ length: 5 }).map((_, idx) => (
+                              <IconStar
+                                key={idx}
+                                size={12}
+                                filled={idx < Math.floor(eb.avaliacao)}
+                                style={{ color: "#c9a84c" }}
+                              />
+                            ))}
+                          </div>
                           <span style={{ color: "#9baab8" }}>{eb.avaliacao}</span>
                         </div>
                         <span style={{ color: "#5a6a7a" }}>
-                          ⬇ {eb.downloads.toLocaleString()} downloads
+                          {eb.downloads.toLocaleString()} downloads
                         </span>
                       </div>
 
@@ -553,6 +563,32 @@ export default function EbooksPage() {
             ))}
           </div>
         </section>
+
+        <style>{`
+          .ebooks-page-hero {
+            height: 440px;
+            padding: 0 40px 60px;
+          }
+          .ebooks-page-filtros {
+            padding: 36px 40px 0;
+          }
+          .ebooks-page-grid-sec {
+            padding: 32px 40px 80px;
+          }
+          @media (max-width: 768px) {
+            .ebooks-page-hero {
+              height: auto !important;
+              min-height: 320px !important;
+              padding: 90px 16px 36px !important;
+            }
+            .ebooks-page-filtros {
+              padding: 24px 16px 0 !important;
+            }
+            .ebooks-page-grid-sec {
+              padding: 24px 16px 50px !important;
+            }
+          }
+        `}</style>
       </main>
       <Footer />
     </>

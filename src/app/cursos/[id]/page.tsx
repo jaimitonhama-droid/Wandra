@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { IconBook, IconStar, IconPlay } from "@/components/Icons";
 
 import { use } from "react";
 
@@ -148,10 +149,14 @@ export default async function CursoDetailPage({ params }: { params: Promise<{ id
                 {cursoMock.descricao}
               </p>
               
-              <div style={{ display: "flex", gap: "24px", color: "#9baab8", fontSize: "0.9rem" }}>
-                <span>⏱ {cursoMock.duracao}</span>
-                <span>📚 {cursoMock.aulas} aulas</span>
-                <span style={{ color: "#c9a84c" }}>⭐ {cursoMock.avaliacao} ({cursoMock.alunos} alunos)</span>
+              <div style={{ display: "flex", gap: "24px", color: "#9baab8", fontSize: "0.9rem", alignItems: "center", flexWrap: "wrap" }}>
+                <span>{cursoMock.duracao}</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <IconBook size={16} /> {cursoMock.aulas} aulas
+                </span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#c9a84c" }}>
+                  <IconStar size={16} filled /> {cursoMock.avaliacao} ({cursoMock.alunos} alunos)
+                </span>
               </div>
             </div>
 
@@ -188,8 +193,8 @@ export default async function CursoDetailPage({ params }: { params: Promise<{ id
                   unoptimized
                   style={{ objectFit: "cover", opacity: 0.7 }}
                 />
-                <div style={{ position: "absolute", zIndex: 1, width: "60px", height: "60px", background: "rgba(74, 158, 255, 0.9)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                   <span style={{ fontSize: "2rem", color: "#fff", marginLeft: "6px" }}>▶</span>
+                <div style={{ position: "absolute", zIndex: 1, width: "60px", height: "60px", background: "rgba(74, 158, 255, 0.9)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}>
+                  <IconPlay size={24} style={{ marginLeft: "3px" }} />
                 </div>
               </div>
               <h2

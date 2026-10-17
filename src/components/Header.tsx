@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "@/services/firebase";
+import { IconBook, IconSearch, IconUser, IconClose, IconMenu } from "@/components/Icons";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -65,10 +66,10 @@ export default function Header() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "17px",
+                color: "#0a0d14",
               }}
             >
-              📚
+              <IconBook size={18} />
             </div>
             <span
               style={{
@@ -90,10 +91,10 @@ export default function Header() {
           style={{ display: "flex", alignItems: "center", gap: "4px" }}
         >
           {[
-            { label: "🏠 Início", href: "/" },
-            { label: "📖 Livros", href: "/livros" },
-            { label: "🎬 Cursos", href: "/cursos" },
-            { label: "📱 E-books", href: "/ebooks" },
+            { label: "Início", href: "/" },
+            { label: "Livros", href: "/livros" },
+            { label: "Cursos", href: "/cursos" },
+            { label: "E-books", href: "/ebooks" },
           ].map((item) => (
             <Link
               key={item.href}
@@ -178,7 +179,7 @@ export default function Header() {
                 transition: "all 0.2s ease",
               }}
             >
-              🔍
+              <IconSearch size={16} />
             </button>
           </div>
 
@@ -235,7 +236,6 @@ export default function Header() {
                 >
                   {user.displayName || user.email?.split("@")[0]}
                 </span>
-                <span style={{ fontSize: "0.75rem", color: "#c9a84c" }}>📚</span>
               </Link>
               <button
                 onClick={() => signOut(auth)}
@@ -281,9 +281,11 @@ export default function Header() {
               color: "#f0f4f8",
               fontSize: "1.2rem",
               padding: "4px",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            🔍
+            <IconSearch size={18} />
           </button>
           <button
             id="mobile-menu-btn"
@@ -294,11 +296,12 @@ export default function Header() {
               border: "none",
               cursor: "pointer",
               color: "#f0f4f8",
-              fontSize: "1.4rem",
               padding: "4px",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            {menuOpen ? "✕" : "☰"}
+            {menuOpen ? <IconClose size={22} /> : <IconMenu size={22} />}
           </button>
         </div>
       </div>
@@ -337,10 +340,10 @@ export default function Header() {
           }}
         >
           {[
-            { label: "🏠 Início", href: "/" },
-            { label: "📖 Livros Digitais", href: "/livros" },
-            { label: "🎬 Vídeo-Aulas", href: "/cursos" },
-            { label: "📱 E-books", href: "/ebooks" },
+            { label: "Início", href: "/" },
+            { label: "Livros Digitais", href: "/livros" },
+            { label: "Vídeo-Aulas", href: "/cursos" },
+            { label: "E-books", href: "/ebooks" },
           ].map((item) => (
             <Link
               key={item.href}
@@ -361,8 +364,8 @@ export default function Header() {
           <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
             {user ? (
               <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", padding: "12px", borderRadius: "12px", background: "rgba(255,255,255,0.05)" }}>
-                <span style={{ fontSize: "0.9rem", color: "#f0f4f8" }}>
-                  👤 {user.displayName || user.email}
+                <span style={{ fontSize: "0.9rem", color: "#f0f4f8", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <IconUser size={16} style={{ color: "#c9a84c" }} /> {user.displayName || user.email}
                 </span>
                 <button
                   onClick={() => signOut(auth)}
@@ -398,6 +401,7 @@ export default function Header() {
         @media (max-width: 768px) {
           .hidden-mobile { display: none !important; }
           .show-mobile { display: flex !important; }
+          #main-header { padding: 12px 16px !important; }
         }
         @media (min-width: 769px) {
           .show-mobile { display: none !important; }

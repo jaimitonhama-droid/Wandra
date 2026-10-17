@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase";
+import { IconVideo, IconEbook, IconBook } from "@/components/Icons";
 
 const nivelCores: Record<string, string> = {
   Iniciante: "#34d399",
@@ -71,12 +72,11 @@ export default function CursosPage() {
       <main style={{ background: "#060910", minHeight: "100vh" }}>
         {/* ===== HERO ===== */}
         <section
+          className="cursos-hero"
           style={{
             position: "relative",
-            height: "500px",
             display: "flex",
             alignItems: "flex-end",
-            padding: "0 40px 60px",
             overflow: "hidden",
           }}
         >
@@ -115,7 +115,7 @@ export default function CursosPage() {
                 marginBottom: "12px",
               }}
             >
-              🎬 Vídeo-Aulas
+              Vídeo-Aulas
             </p>
             <h1
               style={{
@@ -176,7 +176,7 @@ export default function CursosPage() {
                   textDecoration: "none",
                 }}
               >
-                🎬 Vídeo-Aulas
+                <IconVideo size={16} /> Vídeo-Aulas
               </Link>
               <Link
                 href="#ebooks"
@@ -194,7 +194,7 @@ export default function CursosPage() {
                   textDecoration: "none",
                 }}
               >
-                📱 E-books
+                <IconEbook size={16} /> E-books
               </Link>
               <Link
                 href="#livros"
@@ -212,14 +212,14 @@ export default function CursosPage() {
                   textDecoration: "none",
                 }}
               >
-                📖 Livros
+                <IconBook size={16} /> Livros
               </Link>
             </div>
           </div>
         </section>
 
         {/* ===== FILTROS DE NÍVEL ===== */}
-        <section style={{ padding: "40px 40px 0", maxWidth: "1200px", margin: "0 auto" }}>
+        <section className="cursos-filtros" style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <FadeIn>
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {["Todos", "Iniciante", "Intermédio", "Avançado", "Negócios", "Tecnologia", "Marketing"].map(
@@ -263,15 +263,10 @@ export default function CursosPage() {
         {/* ===== GRELHA DE CURSOS ===== */}
         <section
           id="cursos"
-          style={{ padding: "36px 40px 80px", maxWidth: "1200px", margin: "0 auto" }}
+          className="cursos-grid-sec"
+          style={{ maxWidth: "1200px", margin: "0 auto" }}
         >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-              gap: "22px",
-            }}
-          >
+          <div className="cursos-grid">
             {cursos.map((curso, i) => (
               <FadeIn key={curso.id} delay={i * 80} direction="up">
                 <Link
@@ -362,8 +357,8 @@ export default function CursosPage() {
         {/* ===== SECÇÃO DEDICADA DE E-BOOKS PUBLICADOS ===== */}
         <section
           id="ebooks"
+          className="ebooks-sec"
           style={{
-            padding: "60px 40px",
             maxWidth: "1200px",
             margin: "0 auto",
             borderTop: "1px solid rgba(255,255,255,0.06)",
@@ -373,7 +368,7 @@ export default function CursosPage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "32px", flexWrap: "wrap", gap: "16px" }}>
               <div>
                 <p style={{ color: "#34d399", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "8px" }}>
-                  📱 Biblioteca Prática
+                  Biblioteca Prática
                 </p>
                 <h2 style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 700, color: "#f0f4f8", margin: 0 }}>
                   E-books Publicados
@@ -413,18 +408,16 @@ export default function CursosPage() {
               padding: "48px 24px",
               textAlign: "center",
             }}>
-              <div style={{ fontSize: "40px", marginBottom: "12px" }}>📱</div>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "12px", color: "#34d399", opacity: 0.5 }}>
+                <IconEbook size={44} />
+              </div>
               <h3 style={{ color: "#fff", fontSize: "1.1rem", marginBottom: "6px" }}>Nenhum e-book publicado ainda</h3>
               <p style={{ color: "rgba(240,244,248,0.5)", fontSize: "0.9rem", maxWidth: "450px", margin: "0 auto" }}>
                 Novos guias e e-books serão disponibilizados aqui em breve.
               </p>
             </div>
           ) : (
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-              gap: "24px",
-            }}>
+            <div className="ebooks-grid">
               {ebooks.map((ebook, i) => (
                 <FadeIn key={ebook.id} delay={i * 70} direction="up">
                   <Link href={`/livros/${ebook.id}`} style={{ textDecoration: "none", display: "block" }}>
@@ -453,7 +446,9 @@ export default function CursosPage() {
                         {ebook.capaUrl ? (
                           <img src={ebook.capaUrl} alt={ebook.titulo} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         ) : (
-                          <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "48px" }}>📱</div>
+                          <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#34d399", opacity: 0.4 }}>
+                            <IconEbook size={48} />
+                          </div>
                         )}
                         <span style={{
                           position: "absolute",
@@ -466,7 +461,7 @@ export default function CursosPage() {
                           padding: "3px 10px",
                           borderRadius: "50px",
                         }}>
-                          📱 E-book
+                          E-book
                         </span>
                       </div>
                       <div style={{ padding: "18px" }}>
@@ -499,8 +494,8 @@ export default function CursosPage() {
         {/* ===== SECÇÃO DEDICADA DE LIVROS PUBLICADOS ===== */}
         <section
           id="livros"
+          className="livros-sec"
           style={{
-            padding: "60px 40px 100px",
             maxWidth: "1200px",
             margin: "0 auto",
             borderTop: "1px solid rgba(255,255,255,0.06)",
@@ -510,7 +505,7 @@ export default function CursosPage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "32px", flexWrap: "wrap", gap: "16px" }}>
               <div>
                 <p style={{ color: "#c9a84c", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "8px" }}>
-                  📖 Acervo Literário
+                  Acervo Literário
                 </p>
                 <h2 style={{ fontFamily: "var(--font-playfair), Georgia, serif", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 700, color: "#f0f4f8", margin: 0 }}>
                   Livros Publicados
@@ -550,18 +545,16 @@ export default function CursosPage() {
               padding: "48px 24px",
               textAlign: "center",
             }}>
-              <div style={{ fontSize: "40px", marginBottom: "12px" }}>📖</div>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "12px", color: "#c9a84c", opacity: 0.5 }}>
+                <IconBook size={44} />
+              </div>
               <h3 style={{ color: "#fff", fontSize: "1.1rem", marginBottom: "6px" }}>Nenhum livro publicado ainda</h3>
               <p style={{ color: "rgba(240,244,248,0.5)", fontSize: "0.9rem", maxWidth: "450px", margin: "0 auto" }}>
                 Novos livros serão disponibilizados aqui em breve.
               </p>
             </div>
           ) : (
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-              gap: "24px",
-            }}>
+            <div className="livros-grid">
               {livros.map((livro, i) => (
                 <FadeIn key={livro.id} delay={i * 70} direction="up">
                   <Link href={`/livros/${livro.id}`} style={{ textDecoration: "none", display: "block" }}>
@@ -590,7 +583,9 @@ export default function CursosPage() {
                         {livro.capaUrl ? (
                           <img src={livro.capaUrl} alt={livro.titulo} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         ) : (
-                          <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "48px" }}>📖</div>
+                          <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#c9a84c", opacity: 0.4 }}>
+                            <IconBook size={48} />
+                          </div>
                         )}
                         <span style={{
                           position: "absolute",
@@ -603,7 +598,7 @@ export default function CursosPage() {
                           padding: "3px 10px",
                           borderRadius: "50px",
                         }}>
-                          📖 Livro
+                          Livro
                         </span>
                       </div>
                       <div style={{ padding: "18px" }}>
@@ -632,6 +627,53 @@ export default function CursosPage() {
             </div>
           )}
         </section>
+
+        <style>{`
+          .cursos-hero {
+            height: 480px;
+            padding: 0 40px 60px;
+          }
+          .cursos-filtros {
+            padding: 40px 40px 0;
+          }
+          .cursos-grid-sec {
+            padding: 36px 40px 80px;
+          }
+          .ebooks-sec {
+            padding: 60px 40px;
+          }
+          .livros-sec {
+            padding: 60px 40px 100px;
+          }
+          .cursos-grid, .ebooks-grid, .livros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+          }
+          @media (max-width: 768px) {
+            .cursos-hero {
+              height: auto !important;
+              min-height: 320px !important;
+              padding: 90px 16px 36px !important;
+            }
+            .cursos-filtros {
+              padding: 24px 16px 0 !important;
+            }
+            .cursos-grid-sec {
+              padding: 24px 16px 40px !important;
+            }
+            .ebooks-sec {
+              padding: 36px 16px !important;
+            }
+            .livros-sec {
+              padding: 36px 16px 50px !important;
+            }
+            .cursos-grid, .ebooks-grid, .livros-grid {
+              grid-template-columns: 1fr !important;
+              gap: 16px !important;
+            }
+          }
+        `}</style>
       </main>
       <Footer />
     </>

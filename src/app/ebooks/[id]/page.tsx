@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { IconEbook, IconFileText, IconStar, IconCheck } from "@/components/Icons";
 
 // Mock data
 const ebookMock = {
@@ -96,11 +97,17 @@ export default function EbookDetailPage() {
               {ebookMock.titulo}
             </h1>
             
-            <div style={{ display: "flex", gap: "24px", color: "#9baab8", fontSize: "0.95rem", marginBottom: "40px", justifyContent: "center" }}>
-              <span>📱 E-book {ebookMock.formato}</span>
-              <span>📄 {ebookMock.paginas} páginas</span>
-              <span style={{ color: "#c9a84c" }}>⭐ {ebookMock.avaliacao}</span>
-              <span>⬇ {ebookMock.downloads.toLocaleString()} downloads</span>
+            <div style={{ display: "flex", gap: "24px", color: "#9baab8", fontSize: "0.95rem", marginBottom: "40px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                <IconEbook size={16} /> E-book {ebookMock.formato}
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                <IconFileText size={16} /> {ebookMock.paginas} páginas
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#c9a84c" }}>
+                <IconStar size={16} filled /> {ebookMock.avaliacao}
+              </span>
+              <span>{ebookMock.downloads.toLocaleString()} downloads</span>
             </div>
 
             <div
@@ -191,7 +198,7 @@ export default function EbookDetailPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {ebookMock.topicos.map((topico, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-                <span style={{ color: ebookMock.acento, fontSize: "1.2rem" }}>✓</span>
+                <IconCheck size={18} style={{ color: ebookMock.acento, flexShrink: 0, marginTop: "2px" }} />
                 <span style={{ color: "#9baab8", fontSize: "1.05rem", lineHeight: 1.5 }}>
                   {topico}
                 </span>
