@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "@/services/firebase";
@@ -59,17 +60,28 @@ export default function Header() {
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
               style={{
-                width: 34,
-                height: 34,
+                width: 38,
+                height: 38,
                 borderRadius: "10px",
-                background: "linear-gradient(135deg, #c9a84c, #f0d080)",
+                overflow: "hidden",
+                border: "1.5px solid rgba(56, 189, 248, 0.4)",
+                boxShadow: "0 2px 10px rgba(2, 132, 199, 0.3)",
+                background: "#071326",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#0a0d14",
+                position: "relative",
+                flexShrink: 0,
               }}
             >
-              <IconBook size={18} />
+              <Image
+                src="/logo.png"
+                alt="Logo Sabedoria Digital"
+                width={38}
+                height={38}
+                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                priority
+              />
             </div>
             <span
               style={{
@@ -79,7 +91,7 @@ export default function Header() {
                 color: "#f0f4f8",
               }}
             >
-              Sabedoria<span style={{ color: "#c9a84c" }}>Digital</span>
+              Sabedoria<span style={{ color: "#38bdf8" }}>Digital</span>
             </span>
           </div>
         </Link>
@@ -193,6 +205,27 @@ export default function Header() {
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <Link
+                href="/admin"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "6px 14px",
+                  borderRadius: "50px",
+                  background: "rgba(201, 168, 76, 0.15)",
+                  border: "1px solid rgba(201, 168, 76, 0.35)",
+                  color: "#f0d080",
+                  textDecoration: "none",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
+                  transition: "all 0.2s",
+                }}
+                className="hover:bg-amber-500/25"
+              >
+                <span>⚙️</span>
+                <span>Painel Admin</span>
+              </Link>
+              <Link
                 href="/minha-conta"
                 style={{
                   display: "flex",
@@ -269,8 +302,29 @@ export default function Header() {
           )}
         </div>
 
-        {/* Mobile: Search + Burger */}
+        {/* Mobile: Admin badge + Search + Burger */}
         <div className="show-mobile" style={{ display: "none", alignItems: "center", gap: "8px" }}>
+          {user && (
+            <Link
+              href="/admin"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                padding: "5px 11px",
+                borderRadius: "50px",
+                background: "linear-gradient(135deg, rgba(201,168,76,0.25), rgba(240,208,128,0.15))",
+                border: "1px solid rgba(201,168,76,0.45)",
+                color: "#f0d080",
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              <span>⚙️</span>
+              <span>Admin</span>
+            </Link>
+          )}
           <button
             aria-label="Pesquisar"
             onClick={() => setSearchOpen(!searchOpen)}
@@ -363,17 +417,63 @@ export default function Header() {
           ))}
           <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
             {user ? (
-              <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", padding: "12px", borderRadius: "12px", background: "rgba(255,255,255,0.05)" }}>
-                <span style={{ fontSize: "0.9rem", color: "#f0f4f8", display: "flex", alignItems: "center", gap: "6px" }}>
-                  <IconUser size={16} style={{ color: "#c9a84c" }} /> {user.displayName || user.email}
-                </span>
-                <button
-                  onClick={() => signOut(auth)}
-                  className="btn-outline"
-                  style={{ padding: "6px 14px", fontSize: "0.8rem" }}
-                >
-                  Sair
-                </button>
+              <div style={{ display: "flex", flexDirection: "column", width: "100%", gap: "10px" }}>
+                <div style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", borderRadius: "12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <span style={{ fontSize: "0.85rem", color: "#f0f4f8", display: "flex", alignItems: "center", gap: "8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <IconUser size={16} style={{ color: "#c9a84c", flexShrink: 0 }} /> {user.displayName || user.email}
+                  </span>
+                  <button
+                    onClick={() => { setMenuOpen(false); signOut(auth); }}
+                    className="btn-outline"
+                    style={{ padding: "5px 12px", fontSize: "0.75rem", flexShrink: 0 }}
+                  >
+                    Sair
+                  </button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                  <Link
+                    href="/admin"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "6px",
+                      padding: "11px",
+                      borderRadius: "10px",
+                      background: "linear-gradient(135deg, rgba(201,168,76,0.25), rgba(240,208,128,0.15))",
+                      border: "1px solid rgba(201,168,76,0.5)",
+                      color: "#f0d080",
+                      fontWeight: 700,
+                      fontSize: "0.85rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span>⚙️</span>
+                    <span>Painel Admin</span>
+                  </Link>
+                  <Link
+                    href="/minha-conta"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "6px",
+                      padding: "11px",
+                      borderRadius: "10px",
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      color: "#f0f4f8",
+                      fontWeight: 600,
+                      fontSize: "0.85rem",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span>📚</span>
+                    <span>Minha Conta</span>
+                  </Link>
+                </div>
               </div>
             ) : (
               <>

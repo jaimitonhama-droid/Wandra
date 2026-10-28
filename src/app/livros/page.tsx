@@ -354,6 +354,7 @@ export default function LivrosPage() {
 
             return (
               <div
+                className="livros-catalogo-grid"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
@@ -392,6 +393,7 @@ export default function LivrosPage() {
                         >
                           {/* Capa do Livro Real */}
                           <div
+                            className="livro-card-capa"
                             style={{
                               height: "280px",
                               position: "relative",
@@ -436,7 +438,7 @@ export default function LivrosPage() {
                           </div>
 
                           {/* Info */}
-                          <div style={{ padding: "18px" }}>
+                          <div className="livro-card-info" style={{ padding: "18px" }}>
                             <p
                               style={{
                                 color: isEbook ? "#34d399" : "#c9a84c",
@@ -536,7 +538,24 @@ export default function LivrosPage() {
             padding: 24px 16px 0 !important;
           }
           .livros-colecao-sec {
-            padding: 32px 16px 50px !important;
+            padding: 24px 12px 50px !important;
+          }
+          .livros-catalogo-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+          }
+          .livro-card-capa {
+            height: 185px !important;
+          }
+          .livro-card-info {
+            padding: 12px 10px !important;
+          }
+          .livro-card-info h3 {
+            font-size: 0.9rem !important;
+            line-height: 1.25 !important;
+          }
+          .livro-card-info p {
+            font-size: 0.75rem !important;
           }
         }
       `}</style>

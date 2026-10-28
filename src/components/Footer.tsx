@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { IconBook } from "@/components/Icons";
 
 export default function Footer() {
@@ -34,17 +35,26 @@ export default function Footer() {
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
               <div
                 style={{
-                  width: 32,
-                  height: 32,
+                  width: 34,
+                  height: 34,
                   borderRadius: "8px",
-                  background: "linear-gradient(135deg, #c9a84c, #f0d080)",
+                  overflow: "hidden",
+                  border: "1px solid rgba(56, 189, 248, 0.4)",
+                  background: "#071326",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#0c1524",
+                  position: "relative",
+                  flexShrink: 0,
                 }}
               >
-                <IconBook size={18} />
+                <Image
+                  src="/logo.png"
+                  alt="Logo Sabedoria Digital"
+                  width={34}
+                  height={34}
+                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                />
               </div>
               <span
                 style={{
@@ -54,7 +64,7 @@ export default function Footer() {
                   color: "#f0f4f8",
                 }}
               >
-                Sabedoria<span style={{ color: "#c9a84c" }}>Digital</span>
+                Sabedoria<span style={{ color: "#38bdf8" }}>Digital</span>
               </span>
             </div>
             <p style={{ color: "#5a6a7a", fontSize: "0.88rem", lineHeight: 1.7, maxWidth: "260px" }}>

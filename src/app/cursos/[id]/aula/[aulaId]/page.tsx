@@ -83,22 +83,13 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
   return (
     <>
       <Header />
-      <div style={{ display: "flex", height: "100vh", paddingTop: "72px", background: "#060910" }}>
+      <div className="aula-layout-wrapper">
         
         {/* Main Content Area (Vídeo) */}
-        <main
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "32px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <main className="aula-main-content">
           <div style={{ width: "100%", maxWidth: "1000px" }}>
-            <div style={{ marginBottom: "16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <h1 style={{ color: "#f0f4f8", fontSize: "1.6rem", fontWeight: 700, margin: 0 }}>
+            <div style={{ marginBottom: "16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+              <h1 className="aula-title" style={{ color: "#f0f4f8", fontSize: "1.6rem", fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
                 {aulaAtual.titulo}
               </h1>
               {/* Botão toggle mobile/desktop para a sidebar */}
@@ -112,64 +103,62 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
                   borderRadius: "8px",
                   cursor: "pointer",
                   fontWeight: 600,
-                  fontSize: "0.85rem"
+                  fontSize: "0.85rem",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
                 }}
               >
-                {sidebarAberto ? "Ocultar Módulos" : "Ver Módulos"}
+                <span>{sidebarAberto ? "📋 Ocultar Aulas" : "📋 Ver Todas as Aulas"}</span>
               </button>
             </div>
             
-            <p style={{ color: "#4a9eff", fontSize: "0.9rem", marginBottom: "24px", fontWeight: 600 }}>
+            <p style={{ color: "#4a9eff", fontSize: "0.9rem", marginBottom: "20px", fontWeight: 600 }}>
               {moduloAtualTitulo}
             </p>
 
             {/* Componente do Player com o ID do YouTube */}
-            <VideoPlayer youtubeId={aulaAtual.youtubeId} title={aulaAtual.titulo} />
+            <div id="video-player-section" style={{ width: "100%", borderRadius: "12px", overflow: "hidden" }}>
+              <VideoPlayer youtubeId={aulaAtual.youtubeId} title={aulaAtual.titulo} />
+            </div>
             
             <div
               style={{
-                marginTop: "32px",
-                padding: "24px",
+                marginTop: "24px",
+                padding: "20px",
                 background: "rgba(255,255,255,0.03)",
                 borderRadius: "12px",
                 border: "1px solid rgba(255,255,255,0.05)"
               }}
             >
-              <h3 style={{ color: "#f0f4f8", marginBottom: "12px", fontSize: "1.1rem" }}>Materiais da Aula</h3>
-              <p style={{ color: "#9baab8", fontSize: "0.9rem", lineHeight: 1.6 }}>
-                Os recursos adicionais, PDFs e apontamentos desta aula encontram-se disponíveis para download na sua área de estudante. 
-                Utilize a secção de comentários abaixo se tiver dúvidas.
+              <h3 style={{ color: "#f0f4f8", marginBottom: "8px", fontSize: "1.05rem" }}>Materiais e Detalhes da Aula</h3>
+              <p style={{ color: "#9baab8", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
+                Os recursos adicionais, PDFs e apontamentos desta aula encontram-se disponíveis na sua área de estudante.
+                Aproveite o conteúdo e avance para a próxima aula na lista abaixo.
               </p>
             </div>
           </div>
         </main>
 
-        {/* Sidebar com Módulos e Aulas */}
+        {/* Sidebar com Módulos e Outras Aulas (fica abaixo do vídeo no celular) */}
         {sidebarAberto && (
-          <aside
-            style={{
-              width: "350px",
-              background: "#0a0d14",
-              borderLeft: "1px solid rgba(255,255,255,0.08)",
-              overflowY: "auto",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div style={{ padding: "24px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-              <Link href={`/cursos`} style={{ color: "#9baab8", fontSize: "0.85rem", textDecoration: "none", display: "inline-block", marginBottom: "12px" }}>
-                ← Voltar à Visão Geral
-              </Link>
-              <h2 style={{ color: "#f0f4f8", fontSize: "1.2rem", fontWeight: 700, margin: 0 }}>
-                {cursoAtual.titulo}
-              </h2>
+          <aside className="aula-sidebar-content">
+            <div style={{ padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <Link href="/cursos" style={{ color: "#9baab8", fontSize: "0.82rem", textDecoration: "none", display: "inline-block", marginBottom: "6px" }}>
+                  ← Voltar a Cursos
+                </Link>
+                <h2 style={{ color: "#f0f4f8", fontSize: "1.1rem", fontWeight: 700, margin: 0 }}>
+                  {cursoAtual.titulo}
+                </h2>
+              </div>
             </div>
 
             <div style={{ flex: 1 }}>
               {cursoAtual.modulos.map((modulo: any) => (
                 <div key={modulo.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-                  <div style={{ padding: "16px 24px", background: "rgba(255,255,255,0.02)" }}>
-                    <h3 style={{ color: "#e2e8f0", fontSize: "0.95rem", fontWeight: 600, margin: 0 }}>
+                  <div style={{ padding: "14px 20px", background: "rgba(255,255,255,0.02)" }}>
+                    <h3 style={{ color: "#e2e8f0", fontSize: "0.9rem", fontWeight: 600, margin: 0 }}>
                       {modulo.titulo}
                     </h3>
                   </div>
@@ -180,13 +169,18 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
                         <Link
                           key={aula.id}
                           href={`/cursos/${id}/aula/${aula.id}`}
+                          onClick={() => {
+                            if (typeof window !== "undefined") {
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }
+                          }}
                           style={{
                             display: "flex",
                             alignItems: "center",
                             gap: "12px",
-                            padding: "16px 24px",
+                            padding: "14px 20px",
                             textDecoration: "none",
-                            background: isActive ? "rgba(74,158,255,0.1)" : "transparent",
+                            background: isActive ? "rgba(74,158,255,0.12)" : "transparent",
                             borderLeft: isActive ? "3px solid #4a9eff" : "3px solid transparent",
                             transition: "background 0.2s"
                           }}
@@ -194,8 +188,8 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
                           <div
                             style={{
                               position: "relative",
-                              width: "100px",
-                              height: "60px",
+                              width: "90px",
+                              height: "55px",
                               borderRadius: "8px",
                               overflow: "hidden",
                               flexShrink: 0,
@@ -210,8 +204,8 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
                               style={{ objectFit: "cover" }}
                             />
                             {isActive && (
-                              <div style={{ position: "absolute", inset: 0, background: "rgba(74,158,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <span style={{ color: "#fff", fontSize: "1.2rem", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>▶</span>
+                              <div style={{ position: "absolute", inset: 0, background: "rgba(74,158,255,0.35)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <span style={{ color: "#fff", fontSize: "1.1rem", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>▶</span>
                               </div>
                             )}
                           </div>
@@ -220,18 +214,18 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
                                 color: isActive ? "#4a9eff" : "#f0f4f8", 
                                 fontSize: "0.85rem", 
                                 margin: "0 0 4px 0", 
-                                fontWeight: isActive ? 600 : 500,
+                                fontWeight: isActive ? 700 : 500,
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis"
                             }}>
                               {aula.titulo}
                             </p>
-                            <p style={{ color: "#9baab8", fontSize: "0.75rem", margin: "0 0 4px 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                            <p style={{ color: "#9baab8", fontSize: "0.75rem", margin: "0 0 4px 0", display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                               Aula completa detalhando o tema passo a passo.
                             </p>
                             <p style={{ color: "#5a6a7a", fontSize: "0.7rem", margin: 0, fontWeight: 600 }}>
-                              ⏱ {aula.duracao === "Vídeo" ? "12:45 min" : aula.duracao}
+                              ⏱ {aula.duracao === "Vídeo" ? "Vídeo Aula" : aula.duracao}
                             </p>
                           </div>
                         </Link>
@@ -244,6 +238,51 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
           </aside>
         )}
       </div>
+
+      <style jsx>{`
+        .aula-layout-wrapper {
+          display: flex;
+          height: calc(100vh - 72px);
+          margin-top: 72px;
+          background: #060910;
+        }
+        .aula-main-content {
+          flex: 1;
+          overflow-y: auto;
+          padding: 32px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .aula-sidebar-content {
+          width: 360px;
+          flex-shrink: 0;
+          background: #0a0d14;
+          border-left: 1px solid rgba(255,255,255,0.08);
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+        }
+        @media (max-width: 900px) {
+          .aula-layout-wrapper {
+            flex-direction: column !important;
+            height: auto !important;
+            min-height: 100vh;
+            margin-top: 60px !important;
+          }
+          .aula-main-content {
+            width: 100% !important;
+            padding: 16px 12px 24px !important;
+            overflow-y: visible !important;
+          }
+          .aula-sidebar-content {
+            width: 100% !important;
+            border-left: none !important;
+            border-top: 1px solid rgba(255,255,255,0.1) !important;
+            overflow-y: visible !important;
+          }
+        }
+      `}</style>
     </>
   );
 }

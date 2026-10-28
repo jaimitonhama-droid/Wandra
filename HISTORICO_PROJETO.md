@@ -133,10 +133,79 @@ Campos de cada documento:
 
 ---
 
-## 📍 6. Ponto Exato de Parada (Para Retomada Imediata)
-- **Situação Atual Identificada:**
-  - No painel da NetShop (`netshop.co.mz/app/carteiras`), as carteiras de saque/recebimento para **M-Pesa** e **e-Mola** apareceram com o status de **"INDISPONÍVEL"**.
-- **O que fazer logo ao retornar:**
-  1. Verificar o menu de **`Compliance`** ou **`Definições`** no painel da NetShop para verificar se a conta precisa de aprovação de documentos (BI/NUIT) para liberar as carteiras móveis.
-  2. Alternativamente, definir se continuaremos com a NetShop ou se ativamos o fluxo direto de pagamento móvel para o seu número com aprovação manual no painel de vendas (`/admin/vendas`) sem a taxa de 10%.
+## 📍 6. Sessão de 17 de Outubro de 2026 — Refinamento Visual, Mobile & Remoção de Emojis
+
+### 6.1. Novo Fundo Visual (Hero & Plataforma)
+- **Ajuste:** O fundo anterior com efeito de partículas/explosão artificial foi completamente removido.
+- **Novo Design:** Implementado um fundo escuro com gradientes sutis em tons de obsidiana e azul profundo (`#080c14` / `#0a0f1d`), transmitindo um aspeto muito mais limpo, sóbrio e profissional conforme referência solicitada.
+
+### 6.2. Redimensionamento dos Cards de Categorias (`CategoryCards.tsx`)
+- Os 3 cards principais da Home (Livros, Vídeo-Aulas e E-books) tinham dimensões alongadas e desproporcionais.
+- A altura da imagem de capa foi reduzida de 320px para 190px (e 160px em mobile).
+- O padding interno e o espaçamento dos textos foram otimizados para criar cartões equilibrados, modernos e elegantes.
+
+### 6.3. Otimização Completa para Mobile (Versão Celular)
+- Corrigida a escala geral de textos, cabeçalhos (`h1`, `h2`), paddings de seção e formulários que ficavam excessivamente grandes no celular.
+- Seções do Hero, Categorias, Prova Social e Rodapé receberam media queries dedicadas para adaptação fluida em telas estreitas (360px–480px).
+
+### 6.4. Menu Mobile Inferior em Formato de Ícones (Bottom Navigation Bar)
+- Atendendo à solicitação para que no celular os menus laterais apareçam na parte inferior:
+  - Implementada barra de navegação fixa inferior (`fixed bottom-0 left-0 right-0 z-50`) com ícones para os painéis (`/minha-conta` e `/admin`).
+  - O utilizador pode navegar com o polegar diretamente entre as abas sem necessidade de abrir gavetas laterais que ocupavam a tela toda.
+
+### 6.5. Remoção de Todos os Emojis & Criação de Ícones SVG Profissionais
+- Criado o componente dedicado `src/components/Icons.tsx` com ícones vetoriais modernos (`IconBook`, `IconVideo`, `IconEbook`, `IconHome`, `IconSearch`, `IconUser`, `IconStar`, `IconCheck`, `IconAlert`, `IconLock`, `IconZap`, `IconClose`, `IconMenu`, `IconEye`, `IconEyeOff`, etc.).
+- **Substituições 100% concluídas:**
+  - `Header.tsx` (logo, navegação desktop, navegação mobile, pesquisa, perfil e botão fechar).
+  - `Footer.tsx` (logo, links de catálogo e remoção de bandeira no rodapé).
+  - `CategoryCards.tsx` (ícones flutuantes dos cartões).
+  - `Testimonials.tsx` (avatares com iniciais coloridas e estrelas SVG douradas).
+  - `TrustSection.tsx` (ícones de segurança, rapidez, dispositivos, qualidade e botões de ação).
+  - `src/app/page.tsx` (badges do hero e mini métricas).
+  - `src/app/livros/page.tsx` e `src/app/livros/[id]/page.tsx` (filtros de categoria, abas, capas placeholder, detalhes e botão de compra).
+  - `src/app/cursos/page.tsx` e `src/app/cursos/[id]/page.tsx` (botões de âncora, vitrines de livros/ebooks, player e métricas).
+  - `src/app/ebooks/page.tsx` e `src/app/ebooks/[id]/page.tsx` (badges de formato, filtros e checklist de tópicos).
+  - `src/app/entrar/page.tsx` e `src/app/criar-conta/page.tsx` (alertas de erro/sucesso e alternador de visibilidade de senha).
+  - `src/app/checkout/page.tsx` (selo de pagamento seguro, modal de espera de PIN móvel e tela de aprovação).
+
+---
+
+
+---
+
+## 📍 8. Sessão de 27 de Outubro de 2026 — Correções Críticas na Versão Mobile
+
+### 8.1. Visibilidade do Painel Admin no Mobile e Cadastro
+- **Problema:** Ao cadastrar ou logar no celular, o usuário via o Gmail no topo mas não tinha acesso ao Painel Admin. O link em `/minha-conta` estava restrito por e-mail hardcoded (`jaimitonhama@gmail.com`) e o texto "Painel Admin" ficava oculto em telas menores (`hidden sm:inline`). Além disso, o menu móvel e o topo do `Header.tsx` não exibiam atalho para o admin.
+- **Solução Implementada:**
+  - `Header.tsx`: Adicionado botão dourado **⚙️ Admin** direto na barra superior mobile quando logado, e botões em grade de 2 colunas (**Painel Admin** e **Minha Conta**) dentro da gaveta móvel ao abrir o menu hambúrguer.
+  - `minha-conta/page.tsx`: Removida restrição arbitrária de string única e liberada a visualização clara do botão com texto "Painel Admin" na barra superior móvel e na barra lateral.
+
+### 8.2. Livros em Grade de 2 em 2 no Mobile
+- **Problema:** Em telas de smartphone, os livros eram renderizados em coluna única (grid de 1), deixando a página excessivamente longa.
+- **Solução Implementada:**
+  - `src/app/livros/page.tsx`: Adicionada classe `.livros-catalogo-grid` com media query `@media (max-width: 768px)` configurando `grid-template-columns: repeat(2, 1fr) !important`, gap ajustado para 12px, altura de capa proporcional (185px) e tipografia fluida.
+  - `src/app/cursos/page.tsx`: Atualizada `.livros-grid` e `.ebooks-grid` para `repeat(2, 1fr)` em telas móveis com capas de 180px.
+  - `src/app/ebooks/page.tsx`: Ambas as grades de e-books ajustadas para 2 colunas no celular.
+  - `src/app/minha-conta/page.tsx`: As abas de *Livros Digitais* e *Meus E-books* agora exibem os itens comprados em `grid-cols-2` no mobile.
+
+### 8.3. Correção de Sobreposição dos Vídeos na Versão Mobile
+- **Problema:** Na sala de aula `/cursos/[id]/aula/[aulaId]`, ao abrir ou trocar de aula no celular, a barra lateral de módulos/outros vídeos (com largura fixa de 350px em `flex-row`) esmagava ou ficava por cima do player de vídeo. O utilizador apenas ouvia o áudio mas não conseguia ver a imagem do vídeo. Além disso, no `VideoPlayer.tsx` havia um hack de `-20% top` e `140% height` com `pointerEvents: none` que impedia o controlo em telas táteis.
+- **Solução Implementada:**
+  - `src/app/cursos/[id]/aula/[aulaId]/page.tsx`:
+    - Layout convertido para fluxo vertical (`flex-direction: column`) no mobile (`<= 900px`).
+    - O vídeo principal agora fica sempre no **topo absoluto**, com largura 100% e visibilidade prioritária.
+    - A lista de outros módulos/aulas foi reposicionada para ficar **abaixo** do vídeo em reprodução.
+    - Adicionado scroll suave automático ao topo (`window.scrollTo({ top: 0, behavior: "smooth" })`) ao clicar em qualquer outra aula.
+  - `src/components/VideoPlayer.tsx`:
+    - Removido o corte de `-20% / 140%` e o overlay transparente que bloqueava o toque. O player agora ocupa 100% do container 16:9.
+    - Habilitados `controls: 1` e `playsinline: 1` para permitir play, pause, ajuste de linha do tempo e tela cheia diretamente no celular.
+
+---
+
+## 📍 9. Ponto Exato de Parada
+- Código testado e validado com compilação TypeScript 100% limpa (`npx tsc --noEmit` bem-sucedido sem erros).
+- Pronto para teste visual pelo usuário no dispositivo móvel ou no emulador de celular.
+
+
 

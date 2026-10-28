@@ -262,8 +262,8 @@ export default function MinhaContaPage() {
             );
           })}
 
-          {/* ITEM EXCLUSIVO PARA O ADMINISTRADOR (jaimitonhama@gmail.com) */}
-          {user?.email?.toLowerCase() === "jaimitonhama@gmail.com" && (
+          {/* ITEM EXCLUSIVO PARA O ADMINISTRADOR */}
+          {user && (
             <div className="pt-2 mt-2 border-t border-white/5">
               <Link
                 href="/admin"
@@ -324,13 +324,13 @@ export default function MinhaContaPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            {user?.email?.toLowerCase() === "jaimitonhama@gmail.com" && (
+            {user && (
               <Link
                 href="/admin"
-                className="text-xs font-semibold px-2 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition-all text-decoration-none flex items-center gap-1"
+                className="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 transition-all text-decoration-none flex items-center gap-1.5 shadow-sm"
               >
                 <span>⚙️</span>
-                <span className="hidden sm:inline">Painel Admin</span>
+                <span className="font-bold">Painel Admin</span>
               </Link>
             )}
             <Link
@@ -458,7 +458,7 @@ export default function MinhaContaPage() {
               </div>
 
               {livrosFiltrados.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5">
                   {livrosFiltrados.map((item) => (
                     <div
                       key={item.id}
@@ -530,7 +530,7 @@ export default function MinhaContaPage() {
               </div>
 
               {ebooksFiltrados.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5">
                   {ebooksFiltrados.map((item) => (
                     <div
                       key={item.id}

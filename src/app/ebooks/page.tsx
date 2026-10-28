@@ -309,6 +309,7 @@ export default function EbooksPage() {
                 </h2>
               </div>
               <div
+                className="ebooks-grid-2cols"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
@@ -381,6 +382,7 @@ export default function EbooksPage() {
           )}
 
           <div
+            className="ebooks-grid-2cols"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
@@ -585,7 +587,11 @@ export default function EbooksPage() {
               padding: 24px 16px 0 !important;
             }
             .ebooks-page-grid-sec {
-              padding: 24px 16px 50px !important;
+              padding: 24px 12px 50px !important;
+            }
+            .ebooks-grid-2cols {
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 12px !important;
             }
           }
         `}</style>

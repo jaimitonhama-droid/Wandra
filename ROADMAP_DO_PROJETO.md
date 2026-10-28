@@ -46,34 +46,38 @@ O usuário entrará em um "Portal" (Página Inicial) onde escolherá qual área 
 - [x] Desenvolver as "Páginas de Produto" (A página onde o cliente vê o detalhe de um curso ou livro antes de comprar).
 
 ### Fase 4: Integrações e Banco de Dados (O Motor)
-- [ ] Modelar a estrutura de dados no Firestore (Tabelas de Produtos e Usuários).
-- [ ] Criar o painel de Administração (para adicionar os produtos).
-- [ ] Integrar a API do YouTube (Lógica para buscar e exibir os vídeos privados).
-- [ ] Configurar a comunicação com o Backblaze B2.
+### Fase 4: Integrações e Banco de Dados (O Motor)
+- [x] Modelar a estrutura de dados no Firestore (Tabelas de Produtos, Livros e Usuários).
+- [x] Criar o painel de Administração (para adicionar os produtos).
+- [x] Integrar a API do YouTube (Lógica para buscar e exibir os vídeos privados).
+- [x] Configurar a comunicação com UploadThing (PDFs e extração automática de capas).
 
 ### Fase 5: Pagamentos e Área do Cliente
-- [ ] Criar a página de Checkout unificado.
-- [ ] Integrar a API do **Netshop** para processamento de pagamentos.
-- [ ] Desenvolver a Área do Cliente (Onde ele acessa "Meus Cursos" e "Meus Downloads").
-- [ ] Criar a lógica de liberação: Pagamento aprovado = Produto liberado no perfil.
+- [x] Criar a página de Checkout unificado (M-Pesa e e-Mola).
+- [x] Integrar a API e Webhook do Netshop para processamento de pagamentos móveis.
+- [x] Desenvolver a Área do Cliente / Minha Conta (`/minha-conta`).
+- [x] Criar a lógica de liberação e estante de materiais.
 
-### Fase 6: Polimento e Lançamento
-- [ ] Revisão completa de Design (Adicionar animações, micro-interações, garantir o visual "Premium").
-- [ ] Testes de responsividade (Garantir que funciona perfeitamente em celulares).
-- [ ] Deploy do site para produção.
+### Fase 6: Polimento, Responsividade e Lançamento
+- [x] Revisão completa de Design (eliminação de fundos artificiais e proporção de cards).
+- [x] Testes e otimização de responsividade mobile (Bottom navigation bar com ícones nos painéis).
+- [x] Remoção de todos os emojis da plataforma e substituição por biblioteca de ícones SVG (`Icons.tsx`).
+- [x] Deploy do site para produção no Vercel (`https://wandra-cursos.vercel.app`).
 
 ---
-*Nota: Este arquivo serve como a memória central do projeto. Ele será atualizado conforme avançarmos nas fases.*
+*Nota: Este arquivo serve como a memória central do projeto. Ele é atualizado conforme avançamos nas fases.*
 
 ## 📝 Log de Progresso (Últimas Atualizações)
-**06 de Outubro de 2026**
-- **Menu:** Adicionado botão "Início" no cabeçalho (Desktop e Mobile) para facilitar a navegação global.
-- **Leitor de Vídeo (Cursos):** Remodelado o componente `VideoPlayer.tsx` para usar um `iframe` nativo com truque avançado de CSS (zoom/letterbox). Isto ocultou permanentemente 100% dos botões e marcas de água do YouTube.
-- **Catálogo de Cursos (Vitrine):** 
-  - Limpeza total de todos os dados e mockups de demonstração a pedido do cliente.
-  - Cartões de cursos modificados para exibirem *apenas* a imagem da capa (thumbnail do vídeo), sem qualquer texto auxiliar, mantendo um design minimalista.
-- **Sala de Aula (Integração de Playlists):**
-  - Dados de demonstração apagados em definitivo.
-  - O sistema extraiu com sucesso os dados (Títulos e Links) de duas playlists reais do cliente.
-  - Adicionado suporte dinâmico (`cursosDB`) em `[id]/aula/[aulaId]/page.tsx` para carregar módulos e aulas reais diretamente do código.
-  - **Cursos implementados:** "Curso de FOREX 2026" e "Curso de Dropshipping Nacional".
+**28 de Outubro de 2026**
+- **Páginas de Detalhes do Livro (`/livros/[id]`) e E-book (`/ebooks/[id]`):** Redesenho da interface ao clicar em uma obra para exibir com destaque imediato o **Nome do Autor**, a **Descrição Completa da Obra** em card dedicado e legível, especificações técnicas (formato PDF, leitura offline, compatibilidade móvel) e botão de compra seguro via M-Pesa / e-Mola.
+- **Integração Real de E-books:** A rota `/ebooks/[id]` agora busca os dados reais da obra cadastrada no Firestore (`db.livros`), garantindo sincronização de autor, capa e sinopse.
+- **Compilação TypeScript:** Verificada e validada com 0 erros (`tsc --noEmit`).
+
+**17 de Outubro de 2026**
+- **Design & Fundo do Site:** Removido o efeito artificial de explosão/partículas do Hero; aplicado fundo elegante em gradiente escuro obsidiana.
+- **Proporções:** Redimensionamento e equilíbrio dos cards de Livros, Vídeo-Aulas e E-books na Home.
+- **Responsividade Mobile:** Ajuste fino de escalas tipográficas e paddings para celulares.
+- **Navegação Móvel por Ícones:** Menus dos painéis no celular convertidos para barra inferior fixa (bottom navigation bar).
+- **Remoção Global de Emojis:** Substituição integral de emojis por ícones vetoriais SVG de alta qualidade em toda a plataforma.
+- **Compilação e Estabilidade:** TypeScript compilando com 0 erros (`tsc --noEmit`). Comandos de push para GitHub/Vercel disponibilizados.
+

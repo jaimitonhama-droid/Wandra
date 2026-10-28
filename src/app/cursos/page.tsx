@@ -442,7 +442,7 @@ export default function CursosPage() {
                         el.style.boxShadow = "none";
                       }}
                     >
-                      <div style={{ height: "240px", position: "relative", background: "#0b1612" }}>
+                      <div className="ebook-card-capa" style={{ height: "240px", position: "relative", background: "#0b1612" }}>
                         {ebook.capaUrl ? (
                           <img src={ebook.capaUrl} alt={ebook.titulo} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         ) : (
@@ -579,7 +579,7 @@ export default function CursosPage() {
                         el.style.boxShadow = "none";
                       }}
                     >
-                      <div style={{ height: "240px", position: "relative", background: "#161b26" }}>
+                      <div className="livro-card-capa" style={{ height: "240px", position: "relative", background: "#161b26" }}>
                         {livro.capaUrl ? (
                           <img src={livro.capaUrl} alt={livro.titulo} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         ) : (
@@ -668,9 +668,16 @@ export default function CursosPage() {
             .livros-sec {
               padding: 36px 16px 50px !important;
             }
-            .cursos-grid, .ebooks-grid, .livros-grid {
+            .cursos-grid {
               grid-template-columns: 1fr !important;
               gap: 16px !important;
+            }
+            .ebooks-grid, .livros-grid {
+              grid-template-columns: repeat(2, 1fr) !important;
+              gap: 12px !important;
+            }
+            .livro-card-capa, .ebook-card-capa {
+              height: 180px !important;
             }
           }
         `}</style>
