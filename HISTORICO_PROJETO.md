@@ -203,9 +203,39 @@ Campos de cada documento:
 
 ---
 
-## 📍 9. Ponto Exato de Parada
-- Código testado e validado com compilação TypeScript 100% limpa (`npx tsc --noEmit` bem-sucedido sem erros).
-- Pronto para teste visual pelo usuário no dispositivo móvel ou no emulador de celular.
+## 📍 10. Sessão de 28 de Outubro de 2026 — Destaque de Descrição e Autor dos Livros, Otimização de E-books e Deploy Completo
+
+### 10.1. Destaque da Descrição e do Nome do Autor na Página de Detalhes
+- **Solicitação do Usuário:** Quando o visitante clica em qualquer livro, deseja ver imediatamente a descrição completa da obra e o nome do autor na página que se abre em seguida.
+- **Solução Implementada em `src/app/livros/[id]/page.tsx`:**
+  - **Autor em Evidência:** Inserido um bloco estilizado com ícone `IconUser`, label e nome do autor em destaque (`Autor da Obra: [Nome]`), garantindo leitura imediata sem passar despercebido.
+  - **Card de Descrição da Obra:** Criada uma seção dedicada com cabeçalho `Descrição da Obra`, ícone `IconFileText`, fundo sutil escuro com borda suave e tipografia confortável (`1.08rem`, `lineHeight: 1.85`, `whiteSpace: pre-line`) para exibir toda a sinopse cadastrada logo na visão principal da tela.
+  - **Card de Compra & Download:** Posicionado à esquerda ao lado da capa, com preço em Meticais (`MT`), botão de compra rápida via carteiras locais (M-Pesa e e-Mola), e checklist com ícones de garantias (download imediato em PDF, leitura offline, compatibilidade com celular, tablet e computador).
+  - **Navegação & Retorno:** Adicionado botão `← Voltar ao Catálogo` e trilha de navegação (breadcrumb) no topo da página.
+  - **Responsividade:** Ajuste com `@media (max-width: 860px)` para adaptar a visualização em uma coluna fluida no celular sem cortes de imagem.
+
+### 10.2. Conexão Real da Rota de E-books (`/ebooks/[id]`)
+- **Problema:** A rota `/ebooks/[id]` exibia apenas dados simulados estáticos de exemplo (`ebookMock`), não refletindo o livro real selecionado.
+- **Solução Implementada em `src/app/ebooks/[id]/page.tsx`:**
+  - Atualizada para consultar dinamicamente o documento correspondente no Firestore (`db.livros`), renderizando capa, título, autor e descrição reais do e-book cadastrado, com fallback compatível para os identificadores de teste.
+
+### 10.3. Otimização de Repositório e Resolução de Erro de Push Git
+- **Problema Enfrentado:** Ao tentar subir todas as alterações acumuladas (mais de 58 MB contendo capas e PDFs de livros reais), o Git apresentou `error: RPC failed; curl 7 Failed to connect to github.com:443` devido a uma oscilação de rede e ao limite de buffer HTTP padrão do Git (1 MB).
+- **Soluções:**
+  1. Adicionado diretório de rascunhos temporários `downloads/` ao `.gitignore`.
+  2. Configurado o buffer de postagem HTTP do Git para 500 MB (`git config http.postBuffer 524288000`).
+  3. Realizado o envio com sucesso (`9f230dd..f3ffde3 main -> main`), transferindo 58.74 MB para o repositório GitHub (`https://github.com/jaimitonhama-droid/Wandra.git`).
+
+### 10.4. Validação de Build e Deploy
+- **TypeScript:** Verificado com `npx tsc --noEmit` — aprovado com **0 erros**.
+- **Next.js Production Build:** Testado com `npm run build` — todas as 22 rotas compiladas e otimizadas com sucesso em produção.
+- **Deploy Automático:** Disparado na Vercel a partir do branch `main`.
+
+---
+
+## 📍 11. Ponto Exato de Parada
+- Plataforma 100% sincronizada entre repositório local, GitHub e Vercel (`https://wandra-cursos.vercel.app`).
+- Catálogo de livros e e-books com visualização completa de capa, título, autor, descrição detalhada e checkout integrado via M-Pesa e e-Mola.
 
 
 
