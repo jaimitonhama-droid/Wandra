@@ -150,26 +150,61 @@ function CheckoutContent() {
     );
   }
 
-  // TELA DE SUCESSO COMPACTA
+  // TELA DE SUCESSO COM BOTÃO DE DOWNLOAD IMEDIATO
   if (sucesso) {
+    const isCurso = item?.tipo === "curso";
     return (
       <div className="min-h-screen bg-[#080c14] text-white flex items-center justify-center p-4 font-sans">
         <div className="w-full max-w-sm bg-[#0f172a] border border-emerald-500/30 rounded-2xl p-6 text-center shadow-2xl">
-          <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3">
-            <IconCheck size={22} />
+          {/* Ícone de sucesso animado */}
+          <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 ring-2 ring-emerald-500/30">
+            <IconCheck size={26} />
           </div>
-          <h2 className="text-base font-bold font-serif mb-1">Pagamento Aprovado!</h2>
-          <p className="text-xs text-[#9baab8] mb-5">
-            O material já está liberado na sua estante.
+          <h2 className="text-base font-bold font-serif mb-1">Pagamento Aprovado! 🎉</h2>
+          <p className="text-xs text-[#9baab8] mb-1">
+            {isCurso
+              ? "O seu acesso às vídeo-aulas foi activado com sucesso."
+              : "O seu livro está pronto para download imediato."}
           </p>
 
-          <div className="space-y-2">
+          {/* Nome do material comprado */}
+          {item?.titulo && (
+            <p className="text-[11px] text-emerald-400 font-semibold mb-5 px-2 truncate">
+              {item.titulo}
+            </p>
+          )}
+
+          <div className="space-y-2.5">
+            {/* BOTÃO PRINCIPAL: Download imediato (só para livros/ebooks) */}
+            {!isCurso && item?.id && user?.uid && (
+              <a
+                href={`/api/livros/download?id=${item.id}&uid=${user.uid}`}
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm text-decoration-none shadow-lg shadow-emerald-500/25 transition-all active:scale-[0.98]"
+              >
+                <span>📥</span>
+                <span>Baixar Agora (PDF)</span>
+              </a>
+            )}
+
+            {/* BOTÃO: Aceder ao curso (para cursos) */}
+            {isCurso && item?.id && (
+              <Link
+                href={`/cursos/${item.id}/aula/${item.id}`}
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#4a9eff] hover:brightness-110 text-white font-bold text-sm text-decoration-none shadow-lg transition-all active:scale-[0.98]"
+              >
+                <span>🎓</span>
+                <span>Começar o Curso Agora →</span>
+              </Link>
+            )}
+
+            {/* BOTÃO SECUNDÁRIO: Ir para a biblioteca */}
             <Link
               href="/minha-conta"
-              className="block w-full py-2.5 rounded-xl bg-gradient-to-r from-[#c9a84c] to-[#b8902a] text-black text-xs font-bold text-center text-decoration-none shadow-md"
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-[#c9a84c] to-[#b8902a] text-black text-xs font-bold text-center text-decoration-none shadow-md"
             >
-              Acessar Minha Biblioteca →
+              📚 Ver Minha Biblioteca
             </Link>
+
             <Link
               href="/"
               className="block w-full py-2 text-center text-xs text-[#9baab8] hover:text-white"

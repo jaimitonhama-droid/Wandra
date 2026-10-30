@@ -5,6 +5,9 @@ import Image from "next/image";
 import { useState, use, useEffect } from "react";
 import Header from "@/components/Header";
 import VideoPlayer from "@/components/VideoPlayer";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { auth, db } from "@/services/firebase";
 
 import { getPlaylistVideos } from "@/services/youtube";
 
@@ -13,6 +16,7 @@ const cursosDB: Record<string, any> = {
   "PLuAV1DdzdhUZuNioOkcUsCy_vP1PQaRfH": {
     id: "PLuAV1DdzdhUZuNioOkcUsCy_vP1PQaRfH",
     titulo: "Curso de FOREX 2026 - Do Zero para Iniciantes",
+    preco: 950,
     modulos: [
       {
         id: "m1",
@@ -27,6 +31,7 @@ const cursosDB: Record<string, any> = {
   "PLnZYFysZKTEw3rpytHVDTo5ph-DbfjjBS": {
     id: "PLnZYFysZKTEw3rpytHVDTo5ph-DbfjjBS",
     titulo: "Curso de Dropshipping Nacional em Moçambique",
+    preco: 950,
     modulos: [
       {
         id: "m1",
@@ -41,14 +46,61 @@ const cursosDB: Record<string, any> = {
 };
 
 export default function AulaPage({ params }: { params: Promise<{ id: string; aulaId: string }> }) {
-  // Desembrulhar params no Next.js 15
   const resolvedParams = use(params);
   const { id, aulaId } = resolvedParams;
 
+  const [user, setUser] = useState<User | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
+  const [temAcesso, setTemAcesso] = useState(false);
   const [cursoAtual, setCursoAtual] = useState<any>(cursosDB[id] || Object.values(cursosDB)[0]);
   const [sidebarAberto, setSidebarAberto] = useState(true);
 
+  // 1. Verificar autenticação
   useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+
+      if (!currentUser) {
+        setLoadingAuth(false);
+        setTemAcesso(false);
+        return;
+      }
+
+      try {
+        // 2. Verificar se o usuário comprou este curso
+        const comprasQuery = query(
+          collection(db, "compras"),
+          where("usuarioId", "==", currentUser.uid),
+          where("materialId", "==", id)
+        );
+        const comprasSnap = await getDocs(comprasQuery);
+
+        if (!comprasSnap.empty) {
+          setTemAcesso(true);
+        } else {
+          // Verificar também na coleção vendas
+          const vendasQuery = query(
+            collection(db, "vendas"),
+            where("usuarioId", "==", currentUser.uid),
+            where("materialId", "==", id),
+            where("status", "==", "aprovado")
+          );
+          const vendasSnap = await getDocs(vendasQuery);
+          setTemAcesso(!vendasSnap.empty);
+        }
+      } catch (err) {
+        console.error("Erro ao verificar acesso:", err);
+        setTemAcesso(false);
+      } finally {
+        setLoadingAuth(false);
+      }
+    });
+    return () => unsub();
+  }, [id]);
+
+  // 3. Carregar lista de vídeos da playlist (só se tiver acesso)
+  useEffect(() => {
+    if (!temAcesso) return;
     let isMounted = true;
     getPlaylistVideos(id).then(videos => {
       if (isMounted && videos.length > 0) {
@@ -65,12 +117,12 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
       }
     });
     return () => { isMounted = false; };
-  }, [id]);
+  }, [id, temAcesso]);
 
   // Encontrar os dados da aula atual
-  let aulaAtual = cursoAtual.modulos[0].aulas[0]; // fallback
+  let aulaAtual = cursoAtual.modulos[0].aulas[0];
   let moduloAtualTitulo = cursoAtual.modulos[0].titulo;
-  
+
   cursoAtual.modulos.forEach((modulo: any) => {
     modulo.aulas.forEach((aula: any) => {
       if (aula.id === aulaId) {
@@ -80,6 +132,129 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
     });
   });
 
+  // ====== ESTADO: Carregando verificação de acesso ======
+  if (loadingAuth) {
+    return (
+      <>
+        <Header />
+        <div style={{ minHeight: "100vh", background: "#060910", display: "flex", alignItems: "center", justifyContent: "center", marginTop: "72px" }}>
+          <div style={{ textAlign: "center", color: "#9baab8" }}>
+            <div style={{ width: "36px", height: "36px", border: "3px solid #4a9eff", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
+            <p style={{ fontSize: "0.9rem" }}>A verificar o seu acesso...</p>
+          </div>
+          <style jsx>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </>
+    );
+  }
+
+  // ====== ESTADO: Não tem acesso (não logado ou não comprou) ======
+  if (!temAcesso) {
+    const cursoInfo = cursosDB[id] || { titulo: "Curso Completo", preco: 950 };
+    return (
+      <>
+        <Header />
+        <div style={{ minHeight: "100vh", background: "#060910", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", marginTop: "72px" }}>
+          <div style={{
+            maxWidth: "480px",
+            width: "100%",
+            background: "#0a0d14",
+            border: "1px solid rgba(74,158,255,0.2)",
+            borderRadius: "20px",
+            padding: "40px 32px",
+            textAlign: "center",
+          }}>
+            {/* Ícone de cadeado */}
+            <div style={{
+              width: "72px", height: "72px",
+              background: "rgba(74,158,255,0.1)",
+              border: "1px solid rgba(74,158,255,0.3)",
+              borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 20px",
+              fontSize: "2rem"
+            }}>
+              🔒
+            </div>
+
+            <h2 style={{ color: "#f0f4f8", fontSize: "1.35rem", fontWeight: 700, marginBottom: "10px" }}>
+              Conteúdo Exclusivo para Alunos
+            </h2>
+            <p style={{ color: "#9baab8", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "28px" }}>
+              Para assistir a esta vídeo-aula e ter acesso ao curso completo{" "}
+              <strong style={{ color: "#f0f4f8" }}>"{cursoInfo.titulo}"</strong>,
+              você precisa adquirir o acesso.
+            </p>
+
+            {/* Botão principal de compra */}
+            <Link
+              href={`/checkout?cursoId=${id}`}
+              style={{
+                display: "block",
+                width: "100%",
+                padding: "14px 20px",
+                background: "linear-gradient(135deg, #c9a84c, #e0c068)",
+                color: "#0a0d14",
+                fontWeight: 800,
+                fontSize: "1rem",
+                borderRadius: "12px",
+                textDecoration: "none",
+                textAlign: "center",
+                marginBottom: "12px",
+                boxShadow: "0 8px 24px rgba(201,168,76,0.3)",
+              }}
+            >
+              🎓 Desbloquear Curso Completo ({cursoInfo.preco} MT)
+            </Link>
+
+            {/* Botão secundário de login */}
+            {!user && (
+              <Link
+                href={`/entrar?redirect=/cursos/${id}/aula/${aulaId}`}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  padding: "12px 20px",
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#9baab8",
+                  fontWeight: 600,
+                  fontSize: "0.9rem",
+                  borderRadius: "12px",
+                  textDecoration: "none",
+                  textAlign: "center",
+                  marginBottom: "16px",
+                }}
+              >
+                Já tenho conta — Entrar
+              </Link>
+            )}
+
+            <Link
+              href="/cursos"
+              style={{ fontSize: "0.82rem", color: "#5a6a7a", textDecoration: "none" }}
+            >
+              ← Ver todos os cursos
+            </Link>
+
+            {/* Benefícios */}
+            <div style={{ marginTop: "28px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "10px", textAlign: "left" }}>
+              {[
+                "✅ Acesso imediato a todas as vídeo-aulas",
+                "✅ Conteúdo atualizado regularmente",
+                "✅ Acesso vitalício na sua área de estudante",
+                "✅ Pagamento seguro via M-Pesa",
+              ].map((b) => (
+                <p key={b} style={{ color: "#9baab8", fontSize: "0.83rem", margin: 0 }}>{b}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // ====== ESTADO: Tem acesso — exibir o player normalmente ======
   return (
     <>
       <Header />
@@ -92,7 +267,6 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
               <h1 className="aula-title" style={{ color: "#f0f4f8", fontSize: "1.6rem", fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
                 {aulaAtual.titulo}
               </h1>
-              {/* Botão toggle mobile/desktop para a sidebar */}
               <button
                 onClick={() => setSidebarAberto(!sidebarAberto)}
                 style={{
@@ -117,7 +291,7 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
               {moduloAtualTitulo}
             </p>
 
-            {/* Componente do Player com o ID do YouTube */}
+            {/* Player de Vídeo */}
             <div id="video-player-section" style={{ width: "100%", borderRadius: "12px", overflow: "hidden" }}>
               <VideoPlayer youtubeId={aulaAtual.youtubeId} title={aulaAtual.titulo} />
             </div>
@@ -140,7 +314,7 @@ export default function AulaPage({ params }: { params: Promise<{ id: string; aul
           </div>
         </main>
 
-        {/* Sidebar com Módulos e Outras Aulas (fica abaixo do vídeo no celular) */}
+        {/* Sidebar com lista de aulas */}
         {sidebarAberto && (
           <aside className="aula-sidebar-content">
             <div style={{ padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>

@@ -479,24 +479,13 @@ export default function MinhaContaPage() {
                         </div>
                       </div>
                       <div className="p-3 bg-black/30 border-t border-white/5 flex gap-2">
-                        {item.pdfUrl && (
-                          <>
-                            <a
-                              href={item.pdfUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 py-1.5 text-center bg-white/5 hover:bg-white/10 text-white text-xs font-semibold rounded-lg border border-white/10"
-                            >
-                              Ler
-                            </a>
-                            <a
-                              href={item.pdfUrl}
-                              download
-                              className="flex-1 py-1.5 text-center bg-[#c9a84c] text-black text-xs font-bold rounded-lg hover:brightness-110"
-                            >
-                              Baixar
-                            </a>
-                          </>
+                        {item.id && user?.uid && (
+                          <a
+                            href={`/api/livros/download?id=${item.id}&uid=${user.uid}`}
+                            className="flex-1 py-1.5 text-center bg-[#c9a84c] text-black text-xs font-bold rounded-lg hover:brightness-110 flex items-center justify-center gap-1"
+                          >
+                            📥 Baixar PDF
+                          </a>
                         )}
                       </div>
                     </div>
@@ -551,24 +540,13 @@ export default function MinhaContaPage() {
                         </div>
                       </div>
                       <div className="p-3 bg-black/30 border-t border-white/5 flex gap-2">
-                        {item.pdfUrl && (
-                          <>
-                            <a
-                              href={item.pdfUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 py-1.5 text-center bg-white/5 hover:bg-white/10 text-white text-xs font-semibold rounded-lg border border-white/10"
-                            >
-                              Ler
-                            </a>
-                            <a
-                              href={item.pdfUrl}
-                              download
-                              className="flex-1 py-1.5 text-center bg-emerald-500 text-black text-xs font-bold rounded-lg hover:brightness-110"
-                            >
-                              Baixar
-                            </a>
-                          </>
+                        {item.id && user?.uid && (
+                          <a
+                            href={`/api/livros/download?id=${item.id}&uid=${user.uid}`}
+                            className="flex-1 py-1.5 text-center bg-emerald-500 text-black text-xs font-bold rounded-lg hover:brightness-110 flex items-center justify-center gap-1"
+                          >
+                            📥 Baixar PDF
+                          </a>
                         )}
                       </div>
                     </div>
