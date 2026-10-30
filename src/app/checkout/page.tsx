@@ -321,7 +321,7 @@ function CheckoutContent() {
             </div>
 
             {/* Botão de Confirmação Neutro e Elegante */}
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               <button
                 type="submit"
                 disabled={processando}
@@ -330,9 +330,27 @@ function CheckoutContent() {
                 {processando ? (
                   <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  <span>Confirmar</span>
+                  <span>Pagar via {metodo} (Automático)</span>
                 )}
               </button>
+
+              {/* Opção Alternativa Direta via WhatsApp */}
+              <div className="relative flex py-1 items-center">
+                <div className="flex-grow border-t border-white/10"></div>
+                <span className="flex-shrink mx-2 text-[10px] uppercase font-bold text-[#7a8a9a]">ou</span>
+                <div className="flex-grow border-t border-white/10"></div>
+              </div>
+
+              <a
+                href={`https://wa.me/258834490642?text=${encodeURIComponent(
+                  `Olá Sabedoria Digital! Gostaria de comprar "${item?.titulo || "Material"}" por ${valorFixo} MT pelo WhatsApp. Como posso efetuar o pagamento?`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#25d366]/15 hover:bg-[#25d366]/25 border border-[#25d366]/40 text-[#25d366] font-bold text-xs flex items-center justify-center gap-2 transition-all text-decoration-none shadow-sm cursor-pointer"
+              >
+                <span>💬 Comprar pelo WhatsApp (83 449 0642)</span>
+              </a>
             </div>
           </form>
 

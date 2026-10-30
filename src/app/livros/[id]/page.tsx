@@ -326,6 +326,42 @@ export default function LivroDetailPage() {
                   </button>
                 )}
 
+                {/* Botão Direto de WhatsApp */}
+                <a
+                  href={`https://wa.me/258834490642?text=${encodeURIComponent(
+                    `Olá Sabedoria Digital! Gostaria de comprar o livro "${livro.titulo}" (${livro.preco} MT) pelo WhatsApp. Como posso efetuar o pagamento?`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "8px",
+                    width: "100%",
+                    padding: "14px 18px",
+                    background: "rgba(37, 211, 102, 0.12)",
+                    border: "1px solid rgba(37, 211, 102, 0.35)",
+                    color: "#25d366",
+                    fontWeight: 700,
+                    fontSize: "0.95rem",
+                    borderRadius: "12px",
+                    textDecoration: "none",
+                    textAlign: "center",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(37, 211, 102, 0.22)";
+                    e.currentTarget.style.borderColor = "#25d366";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(37, 211, 102, 0.12)";
+                    e.currentTarget.style.borderColor = "rgba(37, 211, 102, 0.35)";
+                  }}
+                >
+                  <span>💬 Comprar pelo WhatsApp (83 449 0642)</span>
+                </a>
+
                 {/* Vantagens com ícones */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.85rem", color: "#a5b4c4" }}>

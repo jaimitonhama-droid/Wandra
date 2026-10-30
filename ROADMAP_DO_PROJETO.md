@@ -68,6 +68,9 @@ O usuário entrará em um "Portal" (Página Inicial) onde escolherá qual área 
 *Nota: Este arquivo serve como a memória central do projeto. Ele é atualizado conforme avançamos nas fases.*
 
 ## 📝 Log de Progresso (Últimas Atualizações)
+**30 de Outubro de 2026**
+- **Correção Definitiva das Capas dos Livros:** Executada a extração da 1ª página (capa original autêntica) de todos os 28 livros a partir de seus PDFs usando o mesmo motor do painel admin. As imagens foram enviadas para o CDN em nuvem (UploadThing) e os links vinculados no Firestore (`db.livros`). 100% dos livros agora possuem capas originais online.
+
 **28 de Outubro de 2026**
 - **Páginas de Detalhes do Livro (`/livros/[id]`) e E-book (`/ebooks/[id]`):** Redesenho da interface ao clicar em uma obra para exibir com destaque imediato o **Nome do Autor**, a **Descrição Completa da Obra** em card dedicado e legível, especificações técnicas (formato PDF, leitura offline, compatibilidade móvel) e botão de compra seguro via M-Pesa / e-Mola.
 - **Integração Real de E-books:** A rota `/ebooks/[id]` agora busca os dados reais da obra cadastrada no Firestore (`db.livros`), garantindo sincronização de autor, capa e sinopse.
