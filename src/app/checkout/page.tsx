@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { doc, getDoc, addDoc, collection } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
 import { IconLock, IconCheck, IconEbook } from "@/components/Icons";
 
@@ -21,7 +21,7 @@ function CheckoutContent() {
   const [item, setItem] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Formulário Automático de Gateway Móvel
+  // Formulário Automático ZumboPay (M-Pesa)
   const [metodo, setMetodo] = useState<"M-Pesa" | "e-Mola">("M-Pesa");
   const [telefone, setTelefone] = useState("");
   const [valorFixo, setValorFixo] = useState<number>(350);
@@ -73,8 +73,9 @@ function CheckoutContent() {
     e.preventDefault();
     setErro(null);
 
-    if (!telefone.trim() || telefone.trim().length < 8) {
-      setErro("Por favor, digite o seu número de telemóvel.");
+    const limpo = telefone.replace(/\D/g, "");
+    if (!limpo || limpo.length < 8) {
+      setErro("Transação falhada. Tente novamente.");
       return;
     }
 
@@ -82,12 +83,11 @@ function CheckoutContent() {
       setProcessando(true);
       setAguardandoPin(true);
 
-      // 1. Dispara a chamada ao gateway NetShop via API interna segura
       const res = await fetch("/api/pagamento", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          telefone: telefone.trim(),
+          telefone: limpo,
           valor: Number(valorFixo),
           metodo: metodo,
           materialId: item?.id || "geral",
@@ -100,43 +100,18 @@ function CheckoutContent() {
 
       const dataRes = await res.json();
 
-      // Registra a venda no Firestore (status aguardando aprovação ou aprovado)
-      const dadosVenda = {
-        clienteNome: user?.displayName || "Cliente",
-        clienteEmail: user?.email || "cliente@gmail.com",
-        clienteTelefone: telefone.trim(),
-        usuarioId: user?.uid || null,
-        materialId: item?.id || "geral",
-        itemTitulo: item?.titulo || "Material Sabedoria Digital",
-        itemTipo: item?.tipo || "livro",
-        valor: Number(valorFixo),
-        metodoPagamento: metodo,
-        referencia: dataRes.chargeId || `${metodo.toUpperCase().replace("-", "")}-${Math.floor(100000 + Math.random() * 900000)}`,
-        status: "aprovado",
-        data: new Date().toISOString(),
-      };
-
-      await addDoc(collection(db, "vendas"), dadosVenda);
-
-      if (user?.uid) {
-        await addDoc(collection(db, "compras"), {
-          usuarioId: user.uid,
-          materialId: item?.id || "geral",
-          titulo: item?.titulo,
-          tipo: item?.tipo || "livro",
-          compradoEm: new Date().toISOString(),
-          status: "liberado",
-        });
+      if (!res.ok || !dataRes.success) {
+        throw new Error(dataRes?.error || "Transação falhada. Tente novamente.");
       }
 
+      // Transição suave para sucesso após autorização do PIN
       setTimeout(() => {
         setAguardandoPin(false);
         setSucesso(true);
-      }, 4000);
-
+      }, 7000);
     } catch (err: any) {
       console.error("Erro ao processar compra:", err);
-      setErro("Falha na comunicação com a carteira. Tente novamente.");
+      setErro("Transação falhada. Tente novamente.");
       setAguardandoPin(false);
     } finally {
       setProcessando(false);
@@ -228,8 +203,9 @@ function CheckoutContent() {
             </span>
           </div>
 
+          {/* Alerta de Erro Compacto */}
           {erro && (
-            <div className="p-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300 text-xs mb-3">
+            <div className="py-1.5 px-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] text-center mb-3">
               {erro}
             </div>
           )}
@@ -266,7 +242,7 @@ function CheckoutContent() {
                   </span>
                 </button>
 
-                {/* e-Mola (Fundo circular com borda limpa, eliminando margens brancas) */}
+                {/* e-Mola */}
                 <button
                   type="button"
                   onClick={() => setMetodo("e-Mola")}
@@ -320,8 +296,8 @@ function CheckoutContent() {
               </div>
             </div>
 
-            {/* Botão de Confirmação Neutro e Elegante */}
-            <div className="pt-2 space-y-2">
+            {/* Botão de Confirmação */}
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={processando}
@@ -330,27 +306,9 @@ function CheckoutContent() {
                 {processando ? (
                   <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  <span>Pagar via {metodo} (Automático)</span>
+                  <span>Confirmar</span>
                 )}
               </button>
-
-              {/* Opção Alternativa Direta via WhatsApp */}
-              <div className="relative flex py-1 items-center">
-                <div className="flex-grow border-t border-white/10"></div>
-                <span className="flex-shrink mx-2 text-[10px] uppercase font-bold text-[#7a8a9a]">ou</span>
-                <div className="flex-grow border-t border-white/10"></div>
-              </div>
-
-              <a
-                href={`https://wa.me/258834490642?text=${encodeURIComponent(
-                  `Olá Sabedoria Digital! Gostaria de comprar "${item?.titulo || "Material"}" por ${valorFixo} MT pelo WhatsApp. Como posso efetuar o pagamento?`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 rounded-xl bg-[#25d366]/15 hover:bg-[#25d366]/25 border border-[#25d366]/40 text-[#25d366] font-bold text-xs flex items-center justify-center gap-2 transition-all text-decoration-none shadow-sm cursor-pointer"
-              >
-                <span>💬 Comprar pelo WhatsApp (83 449 0642)</span>
-              </a>
             </div>
           </form>
 
