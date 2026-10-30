@@ -8,11 +8,33 @@ import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase";
-import { IconBriefcase, IconBrain, IconBook, IconEbook, IconStar } from "@/components/Icons";
+import { 
+  IconBriefcase, 
+  IconBrain, 
+  IconCoins,
+  IconMessage,
+  IconTarget,
+  IconClock,
+  IconRocket,
+  IconShield,
+  IconHeart,
+  IconGlobe,
+  IconBook, 
+  IconEbook, 
+  IconStar 
+} from "@/components/Icons";
 
 const categorias = [
   { icon: IconBriefcase, label: "Negócios" },
   { icon: IconBrain, label: "Desenvolvimento Pessoal" },
+  { icon: IconCoins, label: "Finanças & Riqueza" },
+  { icon: IconGlobe, label: "Marketing Digital" },
+  { icon: IconTarget, label: "Vendas & Negociação" },
+  { icon: IconShield, label: "Filosofia & Estoicismo" },
+  { icon: IconHeart, label: "Inteligência Emocional" },
+  { icon: IconClock, label: "Produtividade & Foco" },
+  { icon: IconRocket, label: "Liderança & Gestão" },
+  { icon: IconMessage, label: "Comunicação & Oratória" },
 ];
 
 interface Livro {

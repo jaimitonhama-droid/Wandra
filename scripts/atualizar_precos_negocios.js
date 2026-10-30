@@ -55,3 +55,4 @@ atualizar().catch((err) => {
   console.error("Erro ao atualizar:", err);
   process.exit(1);
 });
+

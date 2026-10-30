@@ -260,6 +260,14 @@ export default function NovoLivro() {
             >
               <option value="Negócios">💼 Negócios</option>
               <option value="Desenvolvimento Pessoal">🧠 Desenvolvimento Pessoal</option>
+              <option value="Finanças & Riqueza">💰 Finanças & Riqueza</option>
+              <option value="Marketing Digital">🌐 Marketing Digital</option>
+              <option value="Vendas & Negociação">🎯 Vendas & Negociação</option>
+              <option value="Filosofia & Estoicismo">🏛️ Filosofia & Estoicismo</option>
+              <option value="Inteligência Emocional">🧘 Inteligência Emocional</option>
+              <option value="Produtividade & Foco">⏱️ Produtividade & Foco</option>
+              <option value="Liderança & Gestão">🚀 Liderança & Gestão</option>
+              <option value="Comunicação & Oratória">🗣️ Comunicação & Oratória</option>
             </select>
           </div>
           <div>
