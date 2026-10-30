@@ -72,3 +72,4 @@ organizar().catch((err) => {
   console.error("Erro ao organizar:", err);
   process.exit(1);
 });
+
